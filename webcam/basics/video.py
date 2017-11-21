@@ -3,7 +3,7 @@ import numpy as np
 
 cap = cv2.VideoCapture(0)
 fourcc = cv2.VideoWriter_fourcc(*"XVID")
-out = cv2.VideoWriter("vid/output.avi",fourcc,8.5,(640,480))
+out = cv2.VideoWriter("../../vid/output.avi",fourcc,8.5,(640,480))
 
 while True:
     ret, frame = cap.read()

@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import time
 
-cap = cv2.VideoCapture("vid/output.avi")
+cap = cv2.VideoCapture("../../vid/output.avi")
 
 while True:
     ret, frame = cap.read()
