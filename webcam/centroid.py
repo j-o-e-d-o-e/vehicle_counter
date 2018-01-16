@@ -13,7 +13,7 @@ def start():
     cam = cv2.VideoCapture("../vid/rec2_8s.h264")
     back_sub = cv2.createBackgroundSubtractorMOG2()
     kernel = np.ones((5,5),np.uint8)
-    learningRate = 0.1
+    learningRate = 0.5
     MIN_CONTOUR = 150
     count = 0
     found = False

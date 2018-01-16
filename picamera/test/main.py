@@ -5,13 +5,13 @@ import cv2
 import numpy as np
 import time
 
-from picamera import PiCamera
-from picamera.array import PiRGBArray
+#from picamera import PiCamera
+#from picamera.array import PiRGBArray
 from vehicle_counter import VehicleCounter
 
 # ============================================================================
 
-#URL = 'rtsp://crtlabs:Abudabu1!@430n.crtlabs.org:554/videoMain'
+URL = '../../vid/rec2_8s.h264'
 
 # Colours for drawing on processed frames
 DIVIDER_COLOUR = (255, 255, 0)
@@ -20,7 +20,7 @@ CENTROID_COLOUR = (0, 0, 255)
 
 # Set the percentage of the resizing
 K = 0.5
-"""
+
 # Read one frame of the video to get the scale of the frame
 cap = cv2.VideoCapture(URL)
 while True:
@@ -29,12 +29,12 @@ while True:
         frame = cv2.resize(frame, (0, 0), fx = K, fy = K)
         height = frame.shape[0]
         length = frame.shape[1]
-        print height, length
+        print (height, length)
         break
     else:
-        print 'no frame'
+        print ('no frame')
 cap.release()
-"""
+
 
 #height = frame.shape[0]
 #length = frame.shape[1]
@@ -192,8 +192,8 @@ def main():
 
             processed = process_frame(frame, bg_subtractor, car_counter, K)
 
-            # #cv2.imshow('Source Image', frame)
-            # cv2.imshow('Processed Image', processed)
+            cv2.imshow('Source Image', frame)
+            cv2.imshow('Processed Image', processed)
 
             # c = cv2.waitKey(10)
             # if c == 27:
@@ -242,4 +242,4 @@ def main2():
 
 if __name__ == "__main__":
 
-    main2()
+    main()
