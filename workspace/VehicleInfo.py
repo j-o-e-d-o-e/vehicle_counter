@@ -1,0 +1,12 @@
+import cv2
+
+X_DEVIATION = 670  # min 120, 600 or max 800
+Y_DEVIATION = 170  # min 20, 125 or 200
+STEP = 10
+MIDDLE_X = 1000
+RED = [0, 0, 255]
+GREEN = [0, 255, 0]
+BLUE = [255, 0, 0]
+WHITE = [255, 255, 255]
+
+font = cv2.FONT_HERSHEY_SIMPLEX
