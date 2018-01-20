@@ -8,11 +8,22 @@ class Centroid:
         self.x = x
         self.y = y
 
-    def isNearBy(self, other):
-        if other.getX() - X < self.x < other.getX() + X and other.getY() - Y < self.y < other.getY() + Y:
-            return True
+    def isNearBy(self, vCentroid, direction=None):
+        if direction == "west":
+            if self.x <= vCentroid.getX() and vCentroid.getY() - Y < self.y < vCentroid.getY() + Y:
+                return True
+            else:
+                return False
+        elif direction == "east":
+            if self.x >= vCentroid.getX() and vCentroid.getY() - Y < self.y < vCentroid.getY() + Y:
+                return True
+            else:
+                return False
         else:
-            return False
+            if vCentroid.getX() - X < self.x < vCentroid.getX() + X and vCentroid.getY() - Y < self.y < vCentroid.getY() + Y:
+                return True
+            else:
+                return False
 
     def draw(self, image):
         cv2.circle(image, (self.x, self.y), 5, WHITE, -1)

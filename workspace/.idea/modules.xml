@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../../sicp/.idea/sicp.iml" filepath="$PROJECT_DIR$/../../sicp/.idea/sicp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../downloads/speedtrack-master/.idea/speedtrack-master.iml" filepath="$PROJECT_DIR$/../downloads/speedtrack-master/.idea/speedtrack-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/workspace.iml" filepath="$PROJECT_DIR$/.idea/workspace.iml" />
     </modules>
   </component>

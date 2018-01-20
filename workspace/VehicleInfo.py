@@ -1,9 +1,9 @@
 import cv2
 
-X_DEVIATION = 670  # min 120, 600 or max 800
-Y_DEVIATION = 170  # min 20, 125 or 200
+X_DEVIATION = 500  # 120 to 800
+Y_DEVIATION = 150  # 20 to 200
 STEP = 10
-MIDDLE_X = 1000
+MID_X = 1000
 RED = [0, 0, 255]
 GREEN = [0, 255, 0]
 BLUE = [255, 0, 0]
