@@ -9,7 +9,7 @@ def flip(pos):
 
 camera = PiCamera()
 camera.start_preview()
-camera.resolution = (100,100)
+#camera.resolution = (100,100)
 
 """
 for i in range(100):
