@@ -10,7 +10,7 @@ back_sub = cv2.createBackgroundSubtractorMOG2()
 
 camera = PiCamera()
 camera.resolution = (640, 480)
-camera.framerate = 32
+#camera.framerate = 32
 rawCapture = PiRGBArray(camera, size=(640, 480))
 time.sleep(0.1)
 

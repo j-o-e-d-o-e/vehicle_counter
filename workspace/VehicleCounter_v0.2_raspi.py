@@ -1,25 +1,26 @@
 import cv2
-# from picamera.array import PiRGBArray
-# from picamera import PiCamera
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 import time
 import uuid
 
 # To filter instantious changes from the frame
 KERNEL = (21, 21)
 # Lower -> smaller changes are more readily detected
-THRESHOLD_SENSITIVITY = 50
+THRESHOLD_SENSITIVITY = 25 # default: 50
 # The number of square pixels a contour must be before considering it a candidate for tracking
-CONTOUR_SIZE = 500
+CONTOUR_SIZE = 100 # default: 500
 # How much the current frame impacts the average frame (higher -> more change and smaller differences)
 AVERAGE_WEIGHT = 0.04
 # The maximum distance between vehicle and centroid to connect (in px)
-LOCKON_DISTANCE = 80
+LOCKON_DISTANCE = 180 # default: 80
 # The minimum distance between an existing vehicle and a new vehicle
-VEHICLE_DISTANCE = 350
+VEHICLE_DISTANCE = 350 # default: 350
 # How long a vehicle is allowed to sit around without having any new centroid
 VEHICLE_TIMEOUT = 0.7
-# Center on the x axis
-X_CENTER = 400
+# Center on the x axis for desktop and for raspberry
+# X_CENTER = 400
+X_CENTER = 320
 # Constants for drawing on the frame
 RESIZE_RATIO = 0.4
 BLUE = (255, 0, 0)
@@ -46,11 +47,11 @@ found = False
 # A variable to pause/unpause frame processing
 pause = False
 
-"""
 def main_pi():
     global vc, found
     vc = PiCamera()
-    vc.framerate = 32
+    vc.resolution = (640, 480)
+    # vc.framerate = 32
     raw_capture = PiRGBArray(vc, size=(640, 480))
     time.sleep(0.1)
     stream = vc.capture_continuous(raw_capture, format="bgr", use_video_port=True)
@@ -61,13 +62,13 @@ def main_pi():
             time.sleep(3)
             found = False
         image = frame.array
-        image.setflags(write=1)
+        #image.setflags(write=1)
         main_loop(image)
-        rawCapture.truncate(0)
+        #key = cv2.waitKey(1) & 0xFF
+        raw_capture.truncate(0)
 
     cv2.destroyAllWindows()
-    print("Vehicles found total:", count)
-"""
+
 
 def main():
     global vc, pause, found
@@ -142,19 +143,19 @@ def process_frame(frame):
     # Build the average scene image by accumulating this frame
     # with the existing average
     cv2.accumulateWeighted(gray_frame, avg_frame, AVERAGE_WEIGHT)
-    cv2.imshow("1 - AVERAGE accumulating current grayscales", cv2.convertScaleAbs(avg_frame))
+    # cv2.imshow("1 - AVERAGE accumulating current grayscales", cv2.convertScaleAbs(avg_frame))
 
     # Compute the grayscale difference between the current grayscale frame and
     # the average of the scene
     difference_frame = cv2.absdiff(gray_frame, cv2.convertScaleAbs(avg_frame))
-    cv2.imshow("2 - DIFFERENCE between current grayscale and average (also grayscale)", difference_frame)
+    # cv2.imshow("2 - DIFFERENCE between current grayscale and average (also grayscale)", difference_frame)
 
     # Apply a threshold to the difference: any pixel value above the sensitivity
     # value will be set to 255 and any pixel value below will be set to 0
     # -> found object is white, background is black
     _, threshold_frame = cv2.threshold(difference_frame, THRESHOLD_SENSITIVITY, 255, cv2.THRESH_BINARY)
     threshold_frame = cv2.dilate(threshold_frame, None, iterations=2)
-    cv2.imshow("3 - THRESHOLD showing pixels of difference only if they are above threshold", threshold_frame)
+    # cv2.imshow("3 - THRESHOLD showing pixels of difference only if they are above threshold", threshold_frame)
     return threshold_frame
 
 
@@ -253,4 +254,4 @@ def debug(frame):
 
 
 if __name__ == "__main__":
-    main()
+    main_pi()
