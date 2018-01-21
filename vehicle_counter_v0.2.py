@@ -4,7 +4,7 @@ import cv2
 import time
 import uuid
 
-# To filter instantious changes from the frame TEST
+# To filter instantaneous changes from the frame
 KERNEL = (21, 21)
 # Lower -> smaller changes are more readily detected
 THRESHOLD_SENSITIVITY = 50  # default: 50
@@ -19,7 +19,7 @@ VEHICLE_DISTANCE = 350  # default: 350
 # How long a vehicle is allowed to sit around without having any new centroid
 VEHICLE_TIMEOUT = 0.7
 # Center on the x axis for desktop and for raspberry
-X_CENTER = 400 #320
+X_CENTER = 400  # 320
 # Constants for drawing on the frame
 RESIZE_RATIO = 0.4
 BLUE = (255, 0, 0)
@@ -28,7 +28,7 @@ RED = (0, 0, 255)
 WHITE = (255, 255, 255)
 
 # A variable to store the video capture or the pi camera
-vc = None
+cam = None
 # A variable to store the time when a frame was created
 frame_time = None
 # A variable to store the running average
@@ -45,34 +45,30 @@ count = 0
 found = False
 # A variable to pause/unpause frame processing
 pause = False
-"""
+
+
 def main_pi():
-    global vc, found
-    vc = PiCamera()
-    vc.resolution = (640, 480)
-    # vc.framerate = 32
-    raw_capture = PiRGBArray(vc, size=(640, 480))
+    global cam, found
+    cam = PiCamera()
+    cam.resolution = (1920, 1080)
+    raw_capture = PiRGBArray(cam, size=(1920, 1080))
     time.sleep(0.1)
-    stream = vc.capture_continuous(raw_capture, format="bgr", use_video_port=True)
+    stream = cam.capture_continuous(raw_capture, format="bgr", use_video_port=True)
     for frame in stream:
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
-        if found:
-            time.sleep(3)
-            found = False
-        image = frame.array
-        #image.setflags(write=1)
-        main_loop(image)
-        #key = cv2.waitKey(1) & 0xFF
+        height, width = frame.array.shape[:2]
+        frame = cv2.resize(frame, (int(width * RESIZE_RATIO), int(height * RESIZE_RATIO)),
+                           interpolation=cv2.INTER_CUBIC)
+        main_loop(frame)
         raw_capture.truncate(0)
 
     cv2.destroyAllWindows()
-"""
 
 
 def main():
-    global vc, pause, found
-    vc = cv2.VideoCapture('C:/Users/joe/Documents/programming/py/open_cv_desktop/videos/rec2_16s.h264')
+    global cam, pause, found
+    cam = cv2.VideoCapture('C:/Users/joe/Documents/programming/py/open_cv_desktop/videos/rec2_16s.h264')
     while True:
         if cv2.waitKey(1) & 0xFF == ord("p"):
             if pause:
@@ -88,24 +84,19 @@ def main():
         if found:
             time.sleep(3)
             found = False
-        grabbed, frame = get_frame()
-        if not grabbed:
+        return_value, frame = cam.read()
+        if return_value:
+            height, width = frame.shape[:2]
+            print(frame.shape)
+            frame = cv2.resize(frame, (int(width * RESIZE_RATIO), int(height * RESIZE_RATIO)),
+                               interpolation=cv2.INTER_CUBIC)
+        else:
             break
         main_loop(frame)
 
-    vc.release()
+    cam.release()
     cv2.destroyAllWindows()
     print("Vehicles found total:", count)
-
-
-def get_frame():
-    # Grab a frame from the video capture and resizes it
-    rval, frame = vc.read()
-    if rval:
-        height, width = frame.shape[:2]
-        frame = cv2.resize(frame, (int(width * RESIZE_RATIO), int(height * RESIZE_RATIO)),
-                           interpolation=cv2.INTER_CUBIC)
-    return rval, frame
 
 
 def main_loop(frame):
