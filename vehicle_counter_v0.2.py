@@ -4,7 +4,7 @@ import cv2
 import time
 import uuid
 
-# To filter instantious changes from the frame
+# To filter instantious changes from the frame TEST
 KERNEL = (21, 21)
 # Lower -> smaller changes are more readily detected
 THRESHOLD_SENSITIVITY = 50  # default: 50
