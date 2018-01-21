@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="6ae61200-afa4-4df3-b7db-2b69763b57f3" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/img/image.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/old/VehicleDetector.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/picamera/basics/back_subtractor.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/picamera/basics/cam_recording.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/picamera/basics/camera.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/picamera/basics/color_detect.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/picamera/basics/corner_detect.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/picamera/basics/counting.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/picamera/basics/draw.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/picamera/basics/edit_px.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/picamera/basics/noise_reduction.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/picamera/basics/video.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/picamera/test/main.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/picamera/test/vehicle_counter.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/picamera/test1.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/picamera/test2.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test_for_first_raspi_version.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vid/mp4/rec1_16s.mp4" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vid/mp4/rec1_8s.mp4" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vid/mp4/rec2_16s.mp4" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vid/mp4/rec2_8s.mp4" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vid/rec1_16s.h264" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vid/rec1_8s.h264" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vid/rec2_16s.h264" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vid/rec2_8s.h264" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webcam/basics/back_subtractor.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webcam/basics/color_detect.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webcam/basics/corner_detect.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webcam/basics/draw.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webcam/basics/image.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webcam/basics/roi.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webcam/basics/video.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webcam/centroid.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webcam/test_vid.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/workspace/.idea/codeStyleSettings.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/workspace/.idea/dictionaries/joe.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/workspace/.idea/inspectionProfiles/Project_Default.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/workspace/.idea/misc.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/workspace/.idea/modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/workspace/.idea/workspace.iml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/workspace/.idea/workspace.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/workspace/Centroid.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/workspace/Main.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/workspace/Vehicle.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/workspace/VehicleCounter_v0.2_raspi.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/workspace/VehicleInfo.py" afterPath="" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1066" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="open_cv" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="open_cv" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6ae61200-afa4-4df3-b7db-2b69763b57f3" name="Default" comment="" />
+      <created>1516557879035</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1516557879035</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1066" extended-state="7" />
+    <layout>
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+</project>
