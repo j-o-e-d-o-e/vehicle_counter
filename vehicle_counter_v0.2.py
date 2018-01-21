@@ -4,22 +4,22 @@ import cv2
 import time
 import uuid
 
-# To filter instantaneous changes from the frame
-KERNEL = (21, 21)
 # Lower -> smaller changes are more readily detected
 THRESHOLD_SENSITIVITY = 50  # default: 50
 # The number of square pixels a contour must be before considering it a candidate for tracking
 CONTOUR_SIZE = 500  # default: 500
-# How much the current frame impacts the average frame (higher -> more change and smaller differences)
-AVERAGE_WEIGHT = 0.04
 # The maximum distance between vehicle and centroid to connect (in px)
 LOCKON_DISTANCE = 80  # default: 80
 # The minimum distance between an existing vehicle and a new vehicle
 VEHICLE_DISTANCE = 350  # default: 350
+# To filter instantaneous changes from the frame
+KERNEL = (21, 21)
+# How much the current frame impacts the average frame (higher -> more change and smaller differences)
+AVERAGE_WEIGHT = 0.04
 # How long a vehicle is allowed to sit around without having any new centroid
 VEHICLE_TIMEOUT = 0.7
 # Center on the x axis for desktop and for raspberry
-X_CENTER = 400  # 320
+X_CENTER = 400  # raspi: 320
 # Constants for drawing on the frame
 RESIZE_RATIO = 0.4
 BLUE = (255, 0, 0)
@@ -64,6 +64,7 @@ def main_pi():
         raw_capture.truncate(0)
 
     cv2.destroyAllWindows()
+    print("Vehicles found total:", count)
 
 
 def main():
