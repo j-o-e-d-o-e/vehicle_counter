@@ -18,7 +18,7 @@ KERNEL = (21, 21)
 AVERAGE_WEIGHT = 0.04
 # How long a vehicle is allowed to sit around without having any new centroid
 VEHICLE_TIMEOUT = 0.7
-# Center on the x axis for desktop and for raspberry
+# Center on the x axis for the center line
 X_CENTER = 400  # raspi: 320
 # Constants for drawing on the frame
 RESIZE_RATIO = 0.4

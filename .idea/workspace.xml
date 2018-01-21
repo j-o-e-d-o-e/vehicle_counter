@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6ae61200-afa4-4df3-b7db-2b69763b57f3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/open_cv.iml" afterPath="$PROJECT_DIR$/.idea/open_cv.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vehicle_counter_v0.2.py" afterPath="$PROJECT_DIR$/vehicle_counter_v0.2.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,15 +17,15 @@
       <file leaf-file-name="vehicle_counter_v0.2.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/vehicle_counter_v0.2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="33">
-              <caret line="146" column="0" lean-forward="false" selection-start-line="146" selection-start-column="0" selection-end-line="146" selection-end-column="0" />
+            <state relative-caret-position="396">
+              <caret line="20" column="42" lean-forward="false" selection-start-line="20" selection-start-column="42" selection-end-line="20" selection-end-column="42" />
               <folding>
-                <element signature="e#1636#2277#0" expanded="false" />
-                <element signature="e#2296#3240#0" expanded="false" />
-                <element signature="e#3725#4547#0" expanded="false" />
-                <element signature="e#6097#6698#0" expanded="false" />
-                <element signature="e#6733#7512#0" expanded="false" />
-                <element signature="e#7537#7812#0" expanded="false" />
+                <element signature="e#1626#2267#0" expanded="false" />
+                <element signature="e#2286#3230#0" expanded="false" />
+                <element signature="e#3715#4537#0" expanded="false" />
+                <element signature="e#6087#6688#0" expanded="false" />
+                <element signature="e#6723#7502#0" expanded="false" />
+                <element signature="e#7527#7802#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -268,7 +265,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1066" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.104477614" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -304,12 +301,12 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#1636#2277#0" expanded="false" />
-            <element signature="e#2296#3240#0" expanded="false" />
-            <element signature="e#3725#4547#0" expanded="false" />
-            <element signature="e#6097#6698#0" expanded="false" />
-            <element signature="e#6733#7512#0" expanded="false" />
-            <element signature="e#7537#7812#0" expanded="false" />
+            <element signature="e#1626#2267#0" expanded="false" />
+            <element signature="e#2286#3230#0" expanded="false" />
+            <element signature="e#3715#4537#0" expanded="false" />
+            <element signature="e#6087#6688#0" expanded="false" />
+            <element signature="e#6723#7502#0" expanded="false" />
+            <element signature="e#7527#7802#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -329,12 +326,12 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#1636#2277#0" expanded="false" />
-            <element signature="e#2296#3240#0" expanded="false" />
-            <element signature="e#3725#4547#0" expanded="false" />
-            <element signature="e#6097#6698#0" expanded="false" />
-            <element signature="e#6733#7512#0" expanded="false" />
-            <element signature="e#7537#7812#0" expanded="false" />
+            <element signature="e#1626#2267#0" expanded="false" />
+            <element signature="e#2286#3230#0" expanded="false" />
+            <element signature="e#3715#4537#0" expanded="false" />
+            <element signature="e#6087#6688#0" expanded="false" />
+            <element signature="e#6723#7502#0" expanded="false" />
+            <element signature="e#7527#7802#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -368,15 +365,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/vehicle_counter_v0.2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="33">
-          <caret line="146" column="0" lean-forward="false" selection-start-line="146" selection-start-column="0" selection-end-line="146" selection-end-column="0" />
+        <state relative-caret-position="396">
+          <caret line="20" column="42" lean-forward="false" selection-start-line="20" selection-start-column="42" selection-end-line="20" selection-end-column="42" />
           <folding>
-            <element signature="e#1636#2277#0" expanded="false" />
-            <element signature="e#2296#3240#0" expanded="false" />
-            <element signature="e#3725#4547#0" expanded="false" />
-            <element signature="e#6097#6698#0" expanded="false" />
-            <element signature="e#6733#7512#0" expanded="false" />
-            <element signature="e#7537#7812#0" expanded="false" />
+            <element signature="e#1626#2267#0" expanded="false" />
+            <element signature="e#2286#3230#0" expanded="false" />
+            <element signature="e#3715#4537#0" expanded="false" />
+            <element signature="e#6087#6688#0" expanded="false" />
+            <element signature="e#6723#7502#0" expanded="false" />
+            <element signature="e#7527#7802#0" expanded="false" />
           </folding>
         </state>
       </provider>
