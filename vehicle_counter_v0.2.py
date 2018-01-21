@@ -87,7 +87,6 @@ def main():
         return_value, frame = cam.read()
         if return_value:
             height, width = frame.shape[:2]
-            print(frame.shape)
             frame = cv2.resize(frame, (int(width * RESIZE_RATIO), int(height * RESIZE_RATIO)),
                                interpolation=cv2.INTER_CUBIC)
         else:
