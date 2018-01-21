@@ -106,10 +106,8 @@ def main_loop(frame):
     last_centroids = current_centroids
     current_centroids = get_centroids(frame, processed_frame)
     if current_centroids:
-        # connect_centroids_to_vehicles()
         add_centroids_to_vehicles()
 
-    # Draw center line
     cv2.line(frame, (X_CENTER, 100), (X_CENTER, 400), RED)
 
     if vehicles:
@@ -119,31 +117,17 @@ def main_loop(frame):
 
 def process_frame(frame):
     global avg_frame
-    # Convert the frame to Hue Saturation Value (HSV) color space
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    # Only use the Value channel of the frame
     _, _, gray_frame = cv2.split(hsv_frame)
-    # Apply a blur to the frame to smooth out any instantaneous changes
-    # like leaves glinting in sun or birds flying around
     gray_frame = cv2.GaussianBlur(gray_frame, KERNEL, 0)
 
     if avg_frame is None:
-        # Set up the average if this is the first time through
         avg_frame = gray_frame.copy().astype("float")
 
-    # Build the average scene image by accumulating this frame
-    # with the existing average
     cv2.accumulateWeighted(gray_frame, avg_frame, AVERAGE_WEIGHT)
-    # cv2.imshow("1 - AVERAGE accumulating current grayscales", cv2.convertScaleAbs(avg_frame))
-
-    # Compute the grayscale difference between the current grayscale frame and
-    # the average of the scene
     difference_frame = cv2.absdiff(gray_frame, cv2.convertScaleAbs(avg_frame))
     # cv2.imshow("2 - DIFFERENCE between current grayscale and average (also grayscale)", difference_frame)
 
-    # Apply a threshold to the difference: any pixel value above the sensitivity
-    # value will be set to 255 and any pixel value below will be set to 0
-    # -> found object is white, background is black
     _, threshold_frame = cv2.threshold(difference_frame, THRESHOLD_SENSITIVITY, 255, cv2.THRESH_BINARY)
     threshold_frame = cv2.dilate(threshold_frame, None, iterations=2)
     # cv2.imshow("3 - THRESHOLD showing pixels of difference only if they are above threshold", threshold_frame)
@@ -151,11 +135,9 @@ def process_frame(frame):
 
 
 def get_centroids(frame, processed_frame):
-    # Find contours in the processed frame
     _, contours, _ = cv2.findContours(processed_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cv2.drawContours(frame, contours, -1, BLUE, 3)
 
-    # Filter out the contours that are too small to be considered vehicles
     contours = filter(lambda c: cv2.moments(c)['m00'] > CONTOUR_SIZE, contours)
     centroids = []
     for contour in contours:
@@ -210,13 +192,11 @@ def add_new_vehicle(current):
 
 def detect_vehicles(frame):
     global count, found
-    # Delete vehicles that haven't been seen in some amount of time
     for i in range(len(vehicles) - 1, -1, -1):
         if frame_time - vehicles[i]['last_seen'] > VEHICLE_TIMEOUT:
             print("Removing expired vehicle {}".format(vehicles[i]['id']))
             del vehicles[i]
 
-    # Detect vehicles crossing the center line
     for vehicle in [v for v in vehicles if not v['found']]:
         start_x = vehicle['track'][-1][0]
         end_x = vehicle['track'][0][0]
@@ -235,7 +215,6 @@ def detect_vehicles(frame):
 
 
 def debug(frame):
-    # Draw information about the vehicles on the screen
     for vehicle in vehicles:
         cv2.line(frame, vehicle['track'][-1], vehicle['track'][0], RED)
         for centroid in vehicle['track']:
