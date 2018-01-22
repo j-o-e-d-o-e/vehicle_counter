@@ -123,8 +123,8 @@ def process_frame(frame):
 
     if avg_frame is None:
         avg_frame = gray_frame.copy().astype("float")
-
     cv2.accumulateWeighted(gray_frame, avg_frame, AVERAGE_WEIGHT)
+
     difference_frame = cv2.absdiff(gray_frame, cv2.convertScaleAbs(avg_frame))
     # cv2.imshow("2 - DIFFERENCE between current grayscale and average (also grayscale)", difference_frame)
 
@@ -136,7 +136,7 @@ def process_frame(frame):
 
 def get_centroids(frame, processed_frame):
     _, contours, _ = cv2.findContours(processed_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    cv2.drawContours(frame, contours, -1, BLUE, 3)
+    cv2.drawContours(frame, contours, -1, WHITE)
 
     contours = filter(lambda c: cv2.moments(c)['m00'] > CONTOUR_SIZE, contours)
     centroids = []
@@ -152,8 +152,8 @@ def get_centroids(frame, processed_frame):
 def add_centroids_to_vehicles():
     centroids = current_centroids.copy()
     if vehicles:
-        for vehicle in vehicles:
-            for current in centroids:
+        for current in centroids:
+            for vehicle in vehicles:
                 distance = cv2.norm(current, vehicle['track'][0])
                 if distance < LOCKON_DISTANCE:
                     if (vehicle['dir'] == 'left' and vehicle['track'][0][0] > current[0]) or (
