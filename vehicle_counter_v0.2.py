@@ -1,6 +1,6 @@
 import cv2
-from picamera.array import PiRGBArray
-from picamera import PiCamera
+# from picamera.array import PiRGBArray
+# from picamera import PiCamera
 import time
 import uuid
 
@@ -152,8 +152,8 @@ def get_centroids(frame, processed_frame):
 def add_centroids_to_vehicles():
     centroids = current_centroids.copy()
     if vehicles:
-        for current in centroids:
-            for vehicle in vehicles:
+        for vehicle in vehicles:
+            for current in centroids:
                 distance = cv2.norm(current, vehicle['track'][0])
                 if distance < LOCKON_DISTANCE:
                     if (vehicle['dir'] == 'left' and vehicle['track'][0][0] > current[0]) or (
@@ -224,4 +224,4 @@ def debug(frame):
 
 
 if __name__ == "__main__":
-    main_pi()
+    main()
