@@ -1,17 +1,17 @@
 import cv2
-# from picamera.array import PiRGBArray
-# from picamera import PiCamera
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 import time
 import uuid
 
 # Lower -> smaller changes are more readily detected
 THRESHOLD_SENSITIVITY = 50  # default: 50
 # The number of square pixels a contour must be before considering it a candidate for tracking
-CONTOUR_SIZE = 250  # default: 500
+CONTOUR_SIZE = 300  # default: 500
 # The maximum distance between vehicle and centroid to connect (in px)
-LOCKON_DISTANCE = 150  # default: 80
+LOCKON_DISTANCE = 160  # default: 80
 # The minimum distance between an existing vehicle and a new vehicle
-VEHICLE_DISTANCE = 350  # default: 350
+VEHICLE_DISTANCE = 550  # default: 350
 # To filter instantaneous changes from the frame
 KERNEL = (21, 21)
 # How much the current frame impacts the average frame (higher -> more change and smaller differences)
@@ -19,7 +19,7 @@ AVERAGE_WEIGHT = 0.04
 # How long a vehicle is allowed to sit around without having any new centroid
 VEHICLE_TIMEOUT = 0.7
 # Center on the x axis for the center line
-X_CENTER = 400  # raspi: 320
+X_CENTER = 400  # precisely, 384
 # Constants for drawing on the frame
 RESIZE_RATIO = 0.4
 BLUE = (255, 0, 0)
@@ -60,6 +60,8 @@ def main_pi():
         height, width = frame.array.shape[:2]
         frame = cv2.resize(frame.array, (int(width * 1.2), int(height * 0.9)),
                            interpolation=cv2.INTER_CUBIC)
+
+        # print("WIDTH:", frame.shape[1])
         main_loop(frame)
         raw_capture.truncate(0)
 
@@ -130,7 +132,7 @@ def process_frame(frame):
 
     _, threshold_frame = cv2.threshold(difference_frame, THRESHOLD_SENSITIVITY, 255, cv2.THRESH_BINARY)
     threshold_frame = cv2.dilate(threshold_frame, None, iterations=2)
-    # cv2.imshow("3 - THRESHOLD showing pixels of difference only if they are above threshold", threshold_frame)
+    cv2.imshow("3 - THRESHOLD showing pixels of difference only if they are above threshold", threshold_frame)
     return threshold_frame
 
 
@@ -151,6 +153,7 @@ def get_centroids(frame, processed_frame):
 
 def add_centroids_to_vehicles():
     centroids = current_centroids.copy()
+    # print("\nCENTROIDS:", centroids)
     if vehicles:
         for vehicle in vehicles:
             for current in centroids:
@@ -160,8 +163,10 @@ def add_centroids_to_vehicles():
                                     vehicle['dir'] == 'right' and vehicle['track'][0][0] < current[0]):
                         vehicle['track'].insert(0, current)
                         vehicle['last_seen'] = frame_time
+                        #print("CENTROID TO BE REMOVED:", current)
                         centroids.remove(current)
         if centroids:
+            # print("REMAINING CENTROIDS:", centroids)
             for current in centroids:
                 if all(cv2.norm(current, vehicle['track'][0]) > VEHICLE_DISTANCE for vehicle in vehicles):
                     add_new_vehicle(current)
@@ -224,4 +229,4 @@ def debug(frame):
 
 
 if __name__ == "__main__":
-    main()
+    main_pi()
