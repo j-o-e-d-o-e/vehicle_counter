@@ -1,15 +1,15 @@
 import cv2
-# from picamera.array import PiRGBArray
-# from picamera import PiCamera
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 import time
 import uuid
 
 # Lower -> smaller changes are more readily detected
 THRESHOLD_SENSITIVITY = 50  # default: 50
 # The number of square pixels a contour must be before considering it a candidate for tracking
-CONTOUR_SIZE = 500  # default: 500
+CONTOUR_SIZE = 250  # default: 500
 # The maximum distance between vehicle and centroid to connect (in px)
-LOCKON_DISTANCE = 80  # default: 80
+LOCKON_DISTANCE = 150  # default: 80
 # The minimum distance between an existing vehicle and a new vehicle
 VEHICLE_DISTANCE = 350  # default: 350
 # To filter instantaneous changes from the frame
@@ -50,15 +50,15 @@ pause = False
 def main_pi():
     global cam, found
     cam = PiCamera()
-    cam.resolution = (1920, 1080)
-    raw_capture = PiRGBArray(cam, size=(1920, 1080))
+    cam.resolution = (640, 480)
+    raw_capture = PiRGBArray(cam, size=(640, 480))
     time.sleep(0.1)
     stream = cam.capture_continuous(raw_capture, format="bgr", use_video_port=True)
     for frame in stream:
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
         height, width = frame.array.shape[:2]
-        frame = cv2.resize(frame, (int(width * RESIZE_RATIO), int(height * RESIZE_RATIO)),
+        frame = cv2.resize(frame.array, (int(width * 1.2), int(height * 0.9)),
                            interpolation=cv2.INTER_CUBIC)
         main_loop(frame)
         raw_capture.truncate(0)
@@ -224,4 +224,4 @@ def debug(frame):
 
 
 if __name__ == "__main__":
-    main()
+    main_pi()
