@@ -32,4 +32,6 @@ Detects and counts vehicles moving from left to right or vice versa. It can be u
 
 ![debug](https://user-images.githubusercontent.com/26798159/35406646-ca529ec2-0209-11e8-954c-534fe3939275.JPG)
 
-Great repo by @iandees: https://github.com/iandees/speedtrack
+### Materials
+- <a href="https://github.com/iandees/speedtrack">Repo</a> by @iandees
+- <a href="https://docs.opencv.org/3.3.1/d3/d05/tutorial_py_table_of_contents_contours.html">Tutorial</a> about contours
