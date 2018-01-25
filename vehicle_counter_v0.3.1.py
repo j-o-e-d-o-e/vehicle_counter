@@ -9,6 +9,8 @@ import numpy as np
 THRESHOLD_SENSITIVITY = 50  # default: 50
 # The number of square pixels a contour must be before considering it a candidate for tracking
 CONTOUR_SIZE = 300  # default: 500
+# Higher -> contours consist of less points -> less computation
+EPSILON = 0.05  # default: 0.01
 # The maximum distance between vehicle and centroid to connect (in px)
 LOCKON_DISTANCE = 80  # default: 80
 # The minimum distance between an existing vehicle and a new vehicle
@@ -16,7 +18,7 @@ VEHICLE_DISTANCE = 350  # default: 350
 # To filter instantaneous changes from the frame
 KERNEL = (21, 21)
 # How much the current frame impacts the average frame (higher -> more change and smaller differences)
-AVERAGE_WEIGHT = 0.04
+AVERAGE_WEIGHT = 0.04  # default: 0.04
 # How long a vehicle is allowed to sit around without having any new centroid
 VEHICLE_TIMEOUT = 0.8  # default: 0.7
 # Center on the x axis for the center line
@@ -72,7 +74,7 @@ def main_pi():
 
 def main():
     global cam, pause, found
-    cam = cv2.VideoCapture('C:/Users/joe/Documents/programming/py/open_cv_desktop/videos/rec2_16s.h264')
+    cam = cv2.VideoCapture('C:/Users/joe/Documents/programming/py/open_cv_desktop/videos/rec1_16s.h264')
     while True:
         if cv2.waitKey(1) & 0xFF == ord("p"):
             if pause:
@@ -127,17 +129,18 @@ def process_frame(frame):
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     _, _, gray_frame = cv2.split(hsv_frame)
     gray_frame = cv2.GaussianBlur(gray_frame, KERNEL, 0)
+    cv2.imshow("1 - GRAY", gray_frame)
 
     if avg_frame is None:
         avg_frame = gray_frame.copy().astype("float")
     cv2.accumulateWeighted(gray_frame, avg_frame, AVERAGE_WEIGHT)
 
     difference_frame = cv2.absdiff(gray_frame, cv2.convertScaleAbs(avg_frame))
-    # cv2.imshow("2 - DIFFERENCE between current grayscale and average (also grayscale)", difference_frame)
+    cv2.imshow("2 - DIFFERENCE between current grayscale and average (also grayscale)", difference_frame)
 
     _, threshold_frame = cv2.threshold(difference_frame, THRESHOLD_SENSITIVITY, 255, cv2.THRESH_BINARY)
     threshold_frame = cv2.dilate(threshold_frame, None, iterations=2)
-    # cv2.imshow("3 - THRESHOLD showing pixels of difference only if they are above threshold", threshold_frame)
+    cv2.imshow("3 - THRESHOLD showing pixels of difference only if they are above threshold", threshold_frame)
     return threshold_frame
 
 
@@ -146,7 +149,7 @@ def aux_close(contour_1, contour_2):
         for point_2 in contour_2:
             distance_x = abs(point_1[0][0] - point_2[0][0])
             distance_y = abs(point_1[0][1] - point_2[0][1])
-            if distance_x < 300 and distance_y < 30:
+            if distance_x < 300 and distance_y < 20:
                 print(True)
                 return True
     print(False)
@@ -157,7 +160,7 @@ def get_contours(frame, processed_frame):
     global pause
     _, contours, _ = cv2.findContours(processed_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     contours = filter(lambda c: cv2.moments(c)['m00'] > CONTOUR_SIZE, contours)
-    contours = [cv2.approxPolyDP(contour, 0.01 * cv2.arcLength(contour, True), True) for contour in contours]
+    contours = [cv2.approxPolyDP(contour, EPSILON * cv2.arcLength(contour, True), True) for contour in contours]
     contours = sorted(contours, key=lambda c: cv2.contourArea(c), reverse=True)
 
     for i, contour in enumerate(contours):
@@ -220,17 +223,21 @@ def get_contours(frame, processed_frame):
 
         merged_contours = sorted(merged_contours, key=lambda c: cv2.contourArea(c), reverse=True)
         cv2.drawContours(frame, merged_contours, -1, GREEN, 2)
-        # if len(contours) >= 3:
-        #     pause = True
+        if len(contours) >= 3:
+            pause = True
         return merged_contours
 
 
 def get_centroids(frame, contours):
     centroids = []
     for contour in contours:
-        moments = cv2.moments(contour)
-        cx = int(moments['m10'] / moments['m00'])
-        cy = int(moments['m01'] / moments['m00'])
+        x, y, width, height = cv2.boundingRect(contour)
+        cx = int(x + width / 2)
+        cy = int(y + height / 2)
+        # better to use boundinRect instead of moments to avoid zero-division
+        # moments = cv2.moments(contour)
+        # cx = int(moments['m10'] / moments['m00'])
+        # cy = int(moments['m01'] / moments['m00'])
         cv2.circle(frame, (cx, cy), 10, RED, -1)
         centroids.append((cx, cy))
     return centroids
