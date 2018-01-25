@@ -10,10 +10,15 @@ Detects and counts vehicles moving from left to right or vice versa. It can be u
 - Compute the difference between the average and current frame to get the foreground
 - Apply a threshold to this difference frame to get clean shapes of the moving objects in the foreground
 
+![difference](https://user-images.githubusercontent.com/26798159/35406645-ca19d1d2-0209-11e8-8abc-5a8912a21111.JPG)
+![threshold](https://user-images.githubusercontent.com/26798159/35406644-c9f18b5a-0209-11e8-9d69-f1b993f88fc2.JPG)
+
 ### Get contours
 - Get the contours and filter out small contours
 - Reduce the amount of points each contour consists of and sort the contours by size
 - Find contours which are close to each other using the auxiliary function aux_close() and merge these. For instance, if a is close to b and b is close to c, then a is also close to c via a. Consequently, the new merged contour consists of all three contours a, b and c.
+
+![contours](https://user-images.githubusercontent.com/26798159/35406647-ca738ff6-0209-11e8-9d4c-c458819e0c37.JPG)
 
 ### Get centroids and add these to vehicles or create new vehicles
 - Vehicles are stored as dictionaries with the attributes: id, fist time seen, last time seen, direction, a boolean 'found' and a list of 'tracked' centroids
@@ -25,5 +30,6 @@ Detects and counts vehicles moving from left to right or vice versa. It can be u
 - Vehicles which haven't been seen for some time will be removed
 - If a vehicle has not been found yet and has crossed the center line, the vehicle counter increments.
 
+![debug](https://user-images.githubusercontent.com/26798159/35406646-ca529ec2-0209-11e8-954c-534fe3939275.JPG)
 
 Great repo by @iandees: https://github.com/iandees/speedtrack
