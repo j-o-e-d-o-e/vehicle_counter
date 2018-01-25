@@ -16,7 +16,7 @@ Detects and counts vehicles moving from left to right or vice versa. It can be u
 ### Get contours
 - Get the contours and filter out small ones
 - Reduce the amount of points each contour consists of and sort the contours by size
-- Find contours which are close to each other using the auxiliary function aux_close() and merge these. For instance, if a is close to b and b is close to c, then a is also close to c via a. Consequently, the new merged contour consists of all three contours a, b and c.
+- Find contours which are close to each other using the auxiliary function aux_close() and merge these. For instance, if a is close to b and b is close to c, then a is also close to c via b. Consequently, the new merged contour consists of all three contours a, b and c.
 
 ![contours](https://user-images.githubusercontent.com/26798159/35406647-ca738ff6-0209-11e8-9d4c-c458819e0c37.JPG)
 
