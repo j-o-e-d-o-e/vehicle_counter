@@ -4,7 +4,7 @@ Detects and counts vehicles moving from left to right or vice versa. It can be u
 
 ## Procedure
 
-### Process the frame
+### Process frame
 - Convert original frame to grayscale and remove noise
 - Create an average frame, which is basically the static background. Each new frame influences this average frame to some extent
 - Compute the difference between the average and current frame to get the foreground
