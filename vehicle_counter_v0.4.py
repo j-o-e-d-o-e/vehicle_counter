@@ -1,6 +1,6 @@
 import cv2
-from picamera.array import PiRGBArray
-from picamera import PiCamera
+# from picamera.array import PiRGBArray
+# from picamera import PiCamera
 import time
 import uuid
 import numpy as np
@@ -8,9 +8,9 @@ import numpy as np
 # Lower -> smaller changes are more readily detected
 THRESHOLD_SENSITIVITY = 50  # default: 50
 # The number of square pixels a contour must be before considering it a candidate for tracking
-CONTOUR_SIZE = 300  # default: 500
+CONTOUR_SIZE = 500  # default: 500
 # Higher -> contours consist of less points -> less computation
-EPSILON = 0.05  # default: 0.01
+EPSILON = 0.01  # default: 0.01
 # The maximum distance between vehicle and centroid to connect (in px)
 LOCKON_DISTANCE = 120  # default: 80
 # The minimum distance between an existing vehicle and a new vehicle
@@ -20,11 +20,10 @@ KERNEL = (21, 21)
 # How much the current frame impacts the average frame (higher -> more change and smaller differences)
 AVERAGE_WEIGHT = 0.04  # default: 0.04
 # How long a vehicle is allowed to sit around without having any new centroid
-VEHICLE_TIMEOUT = 1.0  # default: 0.7
+VEHICLE_TIMEOUT = 0.8  # default: 0.7
 # Center on the x axis for the center line
-X_CENTER = 384  # default: 400 (precisely, 384)
+X_CENTER = 450  # default: 400 (precisely, 384)
 # Constants for drawing on the frame
-RESIZE_RATIO = 0.4
 BLUE = (255, 0, 0)
 GREEN = (0, 255, 0)
 RED = (0, 0, 255)
@@ -72,7 +71,27 @@ def main_pi():
     print("Vehicles found total:", count)
 
 
-def main():
+def main_cam():
+    global cam, pause, found
+    cam = cv2.VideoCapture(0)
+    while True:
+        if cv2.waitKey(1) & 0xFF == ord("q"):
+            break
+        return_value, frame = cam.read()
+        if return_value:
+            height, width = frame.shape[:2]
+            frame = cv2.resize(frame, (int(width * 1.2), int(height * 0.9)),
+                               interpolation=cv2.INTER_CUBIC)
+        else:
+            break
+        main_loop(frame)
+
+    cam.release()
+    cv2.destroyAllWindows()
+    print("Vehicles found total:", count)
+
+
+def main_vid():
     global cam, pause, found
     cam = cv2.VideoCapture('C:/Users/joe/Documents/programming/py/open_cv_desktop/videos/rec2_32s.h264')
     while True:
@@ -93,7 +112,7 @@ def main():
         return_value, frame = cam.read()
         if return_value:
             height, width = frame.shape[:2]
-            frame = cv2.resize(frame, (int(width * RESIZE_RATIO), int(height * RESIZE_RATIO)),
+            frame = cv2.resize(frame, (int(width * 0.4), int(height * 0.4)),
                                interpolation=cv2.INTER_CUBIC)
         else:
             break
@@ -290,4 +309,4 @@ def debug(frame):
 
 
 if __name__ == "__main__":
-    main_pi()
+    main_cam()
