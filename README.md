@@ -6,7 +6,7 @@ Detects and counts vehicles moving from left to right or vice versa. It can be u
 
 ### Process the frame
 - Convert original frame to grayscale and remove noise
-- Create an average frame, which is basically the static background. Each new frame influences this average frame to a certain extent
+- Create an average frame, which is basically the static background. Each new frame influences this average frame to some extent
 - Compute the difference between the average and current frame to get the foreground
 - Apply a threshold to this difference frame to get clean shapes of the moving objects in the foreground
 
@@ -17,8 +17,8 @@ Detects and counts vehicles moving from left to right or vice versa. It can be u
 
 ### Get centroids and add these to vehicles or create new vehicles
 - Vehicles are stored as dictionaries with the attributes: id, fist time seen, last time seen, direction, a boolean 'found' and a list of 'tracked' centroids
-- If the distance isn't two great and the direction is right, the centroid will be added to this vehicle
-- If there are still centroids left which could not be added to an existing vehicle, create a new vehicle
+- If the distance isn't two great and the direction is right, the centroid will be added to this vehicle. An added centroid will be removed from the list of candidates
+- If there are still centroids left which could not be added to an existing vehicle, check if a new vehicle can be created
 - If a centroid from the current frame is close to one of the last frame, a new vehicle will be created
 
 ###  Detect whether vehicles crossed center line
@@ -26,4 +26,4 @@ Detects and counts vehicles moving from left to right or vice versa. It can be u
 - If a vehicle has not been found yet and has crossed the center line, the vehicle counter increments.
 
 
-Helpful repo by @iandees: https://github.com/iandees/speedtrack
+Great repo by @iandees: https://github.com/iandees/speedtrack
