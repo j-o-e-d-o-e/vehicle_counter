@@ -1,6 +1,6 @@
 import cv2
-# from picamera.array import PiRGBArray
-# from picamera import PiCamera
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 import time
 import uuid
 import numpy as np
@@ -129,18 +129,18 @@ def process_frame(frame):
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     _, _, gray_frame = cv2.split(hsv_frame)
     gray_frame = cv2.GaussianBlur(gray_frame, KERNEL, 0)
-    cv2.imshow("1 - GRAY", gray_frame)
+    # cv2.imshow("1 - GRAY", gray_frame)
 
     if avg_frame is None:
         avg_frame = gray_frame.copy().astype("float")
     cv2.accumulateWeighted(gray_frame, avg_frame, AVERAGE_WEIGHT)
 
     difference_frame = cv2.absdiff(gray_frame, cv2.convertScaleAbs(avg_frame))
-    cv2.imshow("2 - DIFFERENCE between current grayscale and average (also grayscale)", difference_frame)
+    # cv2.imshow("2 - DIFFERENCE between current grayscale and average (also grayscale)", difference_frame)
 
     _, threshold_frame = cv2.threshold(difference_frame, THRESHOLD_SENSITIVITY, 255, cv2.THRESH_BINARY)
     threshold_frame = cv2.dilate(threshold_frame, None, iterations=2)
-    cv2.imshow("3 - THRESHOLD showing pixels of difference only if they are above threshold", threshold_frame)
+    # cv2.imshow("3 - THRESHOLD showing pixels of difference only if they are above threshold", threshold_frame)
     return threshold_frame
 
 
@@ -150,9 +150,9 @@ def aux_close(contour_1, contour_2):
             distance_x = abs(point_1[0][0] - point_2[0][0])
             distance_y = abs(point_1[0][1] - point_2[0][1])
             if distance_x < 300 and distance_y < 20:
-                print(True)
+                # print(True)
                 return True
-    print(False)
+    # print(False)
     return False
 
 
@@ -163,21 +163,21 @@ def get_contours(frame, processed_frame):
     contours = [cv2.approxPolyDP(contour, EPSILON * cv2.arcLength(contour, True), True) for contour in contours]
     contours = sorted(contours, key=lambda c: cv2.contourArea(c), reverse=True)
 
-    for i, contour in enumerate(contours):
-        cv2.drawContours(frame, [contour], -1, WHITE)
-        text = "Contour " + str(i)
-        cv2.putText(frame, text, (contour[0][0][0], contour[0][0][1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, WHITE, 1,
-                    cv2.LINE_AA)
+##    for i, contour in enumerate(contours):
+##        cv2.drawContours(frame, [contour], -1, WHITE)
+##        text = "Contour " + str(i)
+##        cv2.putText(frame, text, (contour[0][0][0], contour[0][0][1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, WHITE, 1,
+##                    cv2.LINE_AA)
 
     if contours:
         groups = [[] for l in range(len(contours) - 1)]
         for i, contour_1 in enumerate(contours[:-1]):
             for j, contour_2 in enumerate(contours[i + 1:]):
-                print("Contour_" + str(i) + " and " + "Contour_" + str(i + 1 + j) + " are close?", end=" ")
+                # print("Contour_" + str(i) + " and " + "Contour_" + str(i + 1 + j) + " are close?", end=" ")
                 if aux_close(contour_1, contour_2):
                     groups[i].append(i + j + 1)
 
-        print("GROUPS:", groups)
+        # print("GROUPS:", groups)
         # e.g. GROUPS: [[1, 2], [2, 3], [3]]
         # Contour0 ist nah an 1 und 2, Contour1 ist nah an 2 und 3, Contour2 ist nah an 3
         # also ergibt sich: [0, 0, 0, 0], weil Contour1 0 und 3 miteinander verbindet
@@ -204,27 +204,27 @@ def get_contours(frame, processed_frame):
                         change_holder[l] = True
                 else:
                     group_num = index + 1
-            print("GROUP_NUM:", group_num)
-            print("GROUP_INDICES_IN_LOOP:", group_indices)
-            print("CHANGE_HOLDER:", change_holder, "\n")
+##            print("GROUP_NUM:", group_num)
+##            print("GROUP_INDICES_IN_LOOP:", group_indices)
+##            print("CHANGE_HOLDER:", change_holder, "\n")
         if not change_holder[-1]:
             group_indices[len(change_holder) - 1] = group_num
 
         merged_contours = []
-        print("GROUP_INDICES:", group_indices)
+        # print("GROUP_INDICES:", group_indices)
         for i in range(max(group_indices) + 1):
             contour_indices = [j for j, v in enumerate(group_indices) if v == i]
-            print("CONTOUR_INDICES", i, ":", contour_indices)
+            # print("CONTOUR_INDICES", i, ":", contour_indices)
             if contour_indices:
                 contour = np.vstack(contours[i] for i in contour_indices)
                 merged_contour = cv2.convexHull(contour)
                 merged_contours.append(merged_contour)
-        print()
+        # print()
 
         merged_contours = sorted(merged_contours, key=lambda c: cv2.contourArea(c), reverse=True)
         cv2.drawContours(frame, merged_contours, -1, GREEN, 2)
-        if len(contours) >= 3:
-            pause = True
+##        if len(contours) >= 3:
+##            pause = True
         return merged_contours
 
 
@@ -321,4 +321,4 @@ def debug(frame):
 
 
 if __name__ == "__main__":
-    main()
+    main_pi()
