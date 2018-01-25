@@ -1,25 +1,26 @@
 import cv2
-from picamera.array import PiRGBArray
-from picamera import PiCamera
+# from picamera.array import PiRGBArray
+# from picamera import PiCamera
 import time
 import uuid
+import numpy as np
 
 # Lower -> smaller changes are more readily detected
 THRESHOLD_SENSITIVITY = 50  # default: 50
 # The number of square pixels a contour must be before considering it a candidate for tracking
 CONTOUR_SIZE = 300  # default: 500
 # The maximum distance between vehicle and centroid to connect (in px)
-LOCKON_DISTANCE = 160  # default: 80
+LOCKON_DISTANCE = 80  # default: 80
 # The minimum distance between an existing vehicle and a new vehicle
-VEHICLE_DISTANCE = 550  # default: 350
+VEHICLE_DISTANCE = 350  # default: 350
 # To filter instantaneous changes from the frame
 KERNEL = (21, 21)
 # How much the current frame impacts the average frame (higher -> more change and smaller differences)
 AVERAGE_WEIGHT = 0.04
 # How long a vehicle is allowed to sit around without having any new centroid
-VEHICLE_TIMEOUT = 0.7
+VEHICLE_TIMEOUT = 0.8  # default: 0.7
 # Center on the x axis for the center line
-X_CENTER = 400  # precisely, 384
+X_CENTER = 384  # default: 400 (precisely, 384)
 # Constants for drawing on the frame
 RESIZE_RATIO = 0.4
 BLUE = (255, 0, 0)
@@ -105,9 +106,13 @@ def main_loop(frame):
     global last_centroids, current_centroids, vehicles, frame_time
     frame_time = time.time()
     processed_frame = process_frame(frame)
-    last_centroids = current_centroids
-    current_centroids = get_centroids(frame, processed_frame)
-    if current_centroids:
+    contours = get_contours(frame, processed_frame)
+    if contours:
+        last_centroids = current_centroids
+        current_centroids = get_centroids(frame, contours)
+    else:
+        last_centroids = current_centroids = []
+    if last_centroids and current_centroids:
         add_centroids_to_vehicles()
 
     cv2.line(frame, (X_CENTER, 100), (X_CENTER, 400), RED)
@@ -132,15 +137,95 @@ def process_frame(frame):
 
     _, threshold_frame = cv2.threshold(difference_frame, THRESHOLD_SENSITIVITY, 255, cv2.THRESH_BINARY)
     threshold_frame = cv2.dilate(threshold_frame, None, iterations=2)
-    cv2.imshow("3 - THRESHOLD showing pixels of difference only if they are above threshold", threshold_frame)
+    # cv2.imshow("3 - THRESHOLD showing pixels of difference only if they are above threshold", threshold_frame)
     return threshold_frame
 
 
-def get_centroids(frame, processed_frame):
-    _, contours, _ = cv2.findContours(processed_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    cv2.drawContours(frame, contours, -1, WHITE)
+def aux_close(contour_1, contour_2):
+    for point_1 in contour_1:
+        for point_2 in contour_2:
+            distance_x = abs(point_1[0][0] - point_2[0][0])
+            distance_y = abs(point_1[0][1] - point_2[0][1])
+            if distance_x < 300 and distance_y < 30:
+                print(True)
+                return True
+    print(False)
+    return False
 
+
+def get_contours(frame, processed_frame):
+    global pause
+    _, contours, _ = cv2.findContours(processed_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     contours = filter(lambda c: cv2.moments(c)['m00'] > CONTOUR_SIZE, contours)
+    contours = [cv2.approxPolyDP(contour, 0.01 * cv2.arcLength(contour, True), True) for contour in contours]
+    contours = sorted(contours, key=lambda c: cv2.contourArea(c), reverse=True)
+
+    for i, contour in enumerate(contours):
+        cv2.drawContours(frame, [contour], -1, WHITE)
+        text = "Contour " + str(i)
+        cv2.putText(frame, text, (contour[0][0][0], contour[0][0][1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, WHITE, 1,
+                    cv2.LINE_AA)
+
+    if contours:
+        groups = [[] for l in range(len(contours) - 1)]
+        for i, contour_1 in enumerate(contours[:-1]):
+            for j, contour_2 in enumerate(contours[i + 1:]):
+                print("Contour_" + str(i) + " and " + "Contour_" + str(i + 1 + j) + " are close?", end=" ")
+                if aux_close(contour_1, contour_2):
+                    groups[i].append(i + j + 1)
+
+        print("GROUPS:", groups)
+        # e.g. GROUPS: [[1, 2], [2, 3], [3]]
+        # Contour0 ist nah an 1 und 2, Contour1 ist nah an 2 und 3, Contour2 ist nah an 3
+        # also ergibt sich: [0, 0, 0, 0], weil Contour1 0 und 3 miteinander verbindet
+
+        group_indices = [0] * len(contours)
+        change_holder = [True] + [False] * (len(contours) - 1)
+        group_num = 0
+        for i, group_1 in enumerate(groups):
+            if change_holder[i]:
+                index = group_indices[i]
+            else:
+                index = group_num
+                group_indices[i] = index
+                change_holder[i] = True
+            if group_1 == []:
+                group_num = index + 1
+            for j in group_1:
+                group_indices[j] = index
+                change_holder[j] = True
+            for group_2 in groups[i + 1:]:
+                if any(k in group_1 for k in group_2):
+                    for l in group_2:
+                        group_indices[l] = index
+                        change_holder[l] = True
+                else:
+                    group_num = index + 1
+            print("GROUP_NUM:", group_num)
+            print("GROUP_INDICES_IN_LOOP:", group_indices)
+            print("CHANGE_HOLDER:", change_holder, "\n")
+        if not change_holder[-1]:
+            group_indices[len(change_holder) - 1] = group_num
+
+        merged_contours = []
+        print("GROUP_INDICES:", group_indices)
+        for i in range(max(group_indices) + 1):
+            contour_indices = [j for j, v in enumerate(group_indices) if v == i]
+            print("CONTOUR_INDICES", i, ":", contour_indices)
+            if contour_indices:
+                contour = np.vstack(contours[i] for i in contour_indices)
+                merged_contour = cv2.convexHull(contour)
+                merged_contours.append(merged_contour)
+        print()
+
+        merged_contours = sorted(merged_contours, key=lambda c: cv2.contourArea(c), reverse=True)
+        cv2.drawContours(frame, merged_contours, -1, GREEN, 2)
+        # if len(contours) >= 3:
+        #     pause = True
+        return merged_contours
+
+
+def get_centroids(frame, contours):
     centroids = []
     for contour in contours:
         moments = cv2.moments(contour)
@@ -163,7 +248,7 @@ def add_centroids_to_vehicles():
                                     vehicle['dir'] == 'right' and vehicle['track'][0][0] < current[0]):
                         vehicle['track'].insert(0, current)
                         vehicle['last_seen'] = frame_time
-                        #print("CENTROID TO BE REMOVED:", current)
+                        # print("CENTROID TO BE REMOVED:", current)
                         centroids.remove(current)
         if centroids:
             # print("REMAINING CENTROIDS:", centroids)
@@ -229,4 +314,4 @@ def debug(frame):
 
 
 if __name__ == "__main__":
-    main_pi()
+    main()
