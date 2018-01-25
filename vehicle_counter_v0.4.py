@@ -12,7 +12,7 @@ CONTOUR_SIZE = 300  # default: 500
 # Higher -> contours consist of less points -> less computation
 EPSILON = 0.05  # default: 0.01
 # The maximum distance between vehicle and centroid to connect (in px)
-LOCKON_DISTANCE = 80  # default: 80
+LOCKON_DISTANCE = 120  # default: 80
 # The minimum distance between an existing vehicle and a new vehicle
 VEHICLE_DISTANCE = 350  # default: 350
 # To filter instantaneous changes from the frame
@@ -20,7 +20,7 @@ KERNEL = (21, 21)
 # How much the current frame impacts the average frame (higher -> more change and smaller differences)
 AVERAGE_WEIGHT = 0.04  # default: 0.04
 # How long a vehicle is allowed to sit around without having any new centroid
-VEHICLE_TIMEOUT = 0.8  # default: 0.7
+VEHICLE_TIMEOUT = 1.0  # default: 0.7
 # Center on the x axis for the center line
 X_CENTER = 384  # default: 400 (precisely, 384)
 # Constants for drawing on the frame
@@ -53,6 +53,7 @@ pause = False
 def main_pi():
     global cam, found
     cam = PiCamera()
+    cam.framerate = 32
     cam.resolution = (640, 480)
     raw_capture = PiRGBArray(cam, size=(640, 480))
     time.sleep(0.1)
@@ -155,7 +156,7 @@ def get_contours(frame, processed_frame):
     contours = filter(lambda c: cv2.moments(c)['m00'] > CONTOUR_SIZE, contours)
     contours = [cv2.approxPolyDP(contour, EPSILON * cv2.arcLength(contour, True), True) for contour in contours]
     contours = sorted(contours, key=lambda c: cv2.contourArea(c), reverse=True)
-
+    
     if contours:
         groups = [[] for l in range(len(contours) - 1)]
         for i, contour_1 in enumerate(contours[:-1]):
