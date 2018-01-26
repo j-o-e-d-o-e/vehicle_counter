@@ -1,6 +1,6 @@
 # vehicle_counter
 
-Detects and counts vehicles moving from left to right or vice versa. It can be used with webcam, pi camera or video file.
+Detects and counts vehicles moving from left to right or vice versa. Also for raspberry pi.
 
 ## Procedure
 
