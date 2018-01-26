@@ -22,7 +22,7 @@ Detects and counts vehicles moving from left to right or vice versa. Also for ra
 
 ### Get centroids and add these to vehicles or create new vehicles
 - Vehicles are stored as dictionaries with the attributes: id, fist time seen, last time seen, direction, a boolean 'found' and a list of 'tracked' centroids (blue dots)
-- If the distance isn't two great and the direction is correct, the centroid will be added to this vehicle. An added centroid will be removed from the list of candidates
+- If the distance isn't too great and the direction is correct, the centroid will be added to this vehicle. An added centroid will be removed from the list of candidates
 - If there are still centroids left in the candidates list, check if a new vehicle can be created
 - If a centroid from the current frame is close to one of the last frame, a new vehicle will be created
 
