@@ -35,7 +35,7 @@ GREEN = (0, 255, 0)
 RED = (0, 0, 255)
 WHITE = (255, 255, 255)
 # A variable for the path of the video file
-PATH_VIDEO = '../vehicle_counter_desktop/videos/rec2_16s.h264'
+PATH_VIDEO = '../vehicle_counter_desktop/videos/rec2_8s.h264'
 
 # A variable to store the video capture or the pi camera
 cam = None
@@ -194,6 +194,7 @@ def aux_merge_contours(contours, iterations):
                 merged_contour = np.vstack((contour_1, contours[i + 1]))
                 merged_contour = cv2.convexHull(merged_contour)
                 clip_board.append(merged_contour)
+                is_added[i] = True
             else:
                 if not is_added[i]:
                     clip_board.append(contour_1)
