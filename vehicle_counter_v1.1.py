@@ -35,7 +35,7 @@ GREEN = (0, 255, 0)
 RED = (0, 0, 255)
 WHITE = (255, 255, 255)
 # A variable for the path of the video file
-PATH_VIDEO = '../vehicle_counter_desktop/videos/rec1_16s.h264'
+PATH_VIDEO = '../vehicle_counter_desktop/videos/rec2_16s.h264'
 
 # A variable to store the video capture or the pi camera
 cam = None
@@ -77,7 +77,6 @@ def main_pi():
         height, width = frame.array.shape[:2]
         frame = cv2.resize(frame.array, (int(width * 1.2), int(height * 0.9)),
                            interpolation=cv2.INTER_CUBIC)
-
         main_loop(frame)
         raw_capture.truncate(0)
 
@@ -96,7 +95,6 @@ def main_cam():
         else:
             break
         main_loop(frame)
-
     cam.release()
 
 
@@ -126,7 +124,6 @@ def main_vid():
         else:
             break
         main_loop(frame)
-
     cam.release()
 
 
@@ -143,7 +140,7 @@ def main_loop(frame):
     if last_centroids and current_centroids:
         add_centroids_to_vehicles()
     cv2.line(frame, (X_CENTER, 100), (X_CENTER, 400), RED)
-    cv2.line(frame, (100, Y_CENTER), (800, Y_CENTER), RED)
+    # cv2.line(frame, (100, Y_CENTER), (800, Y_CENTER), RED)
     if vehicles:
         detect_vehicles(frame)
     debug(frame)
@@ -177,7 +174,7 @@ def get_contours(frame, processed_frame):
     for i, contour in enumerate(contours):
         cv2.drawContours(frame, [contour], -1, WHITE)
         text = "Contour " + str(i)
-        cv2.putText(frame, text, (contour[0][0][0], contour[0][0][1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, WHITE, 1,
+        cv2.putText(frame, text, (contour[0, 0, 0], contour[0, 0, 1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, WHITE, 1,
                     cv2.LINE_AA)
 
     if contours:
@@ -211,9 +208,9 @@ def aux_merge_contours(contours, iterations):
 def aux_close(contour_1, contour_2):
     for point_1 in contour_1:
         for point_2 in contour_2:
-            if not (point_1[0][1] < Y_CENTER < point_2[0][1] or point_1[0][1] > Y_CENTER > point_2[0][1]):
-                distance_x = abs(point_1[0][0] - point_2[0][0])
-                distance_y = abs(point_1[0][1] - point_2[0][1])
+            if not (point_1[0, 1] < Y_CENTER < point_2[0, 1] or point_1[0, 1] > Y_CENTER > point_2[0, 1]):
+                distance_x = abs(point_1[0, 0] - point_2[0, 0])
+                distance_y = abs(point_1[0, 1] - point_2[0, 1])
                 if distance_x < CONTOUR_X_DISTANCE and distance_y < CONTOUR_Y_DISTANCE:
                     return True
     return False
@@ -302,7 +299,6 @@ def debug(frame):
         cv2.line(frame, vehicle['track'][-1], vehicle['track'][0], RED)
         for centroid in vehicle['track']:
             cv2.circle(frame, centroid, 5, BLUE, -1)
-
     cv2.imshow("4 - PREVIEW with information about tracked vehicles", frame)
 
 
