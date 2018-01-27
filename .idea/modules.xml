@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/open_cv.iml" filepath="$PROJECT_DIR$/.idea/open_cv.iml" />
       <module fileurl="file://$PROJECT_DIR$/../plots/.idea/plots.iml" filepath="$PROJECT_DIR$/../plots/.idea/plots.iml" />
       <module fileurl="file://$PROJECT_DIR$/../sicp/.idea/sicp.iml" filepath="$PROJECT_DIR$/../sicp/.idea/sicp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/vehicle_counter.iml" filepath="$PROJECT_DIR$/.idea/vehicle_counter.iml" />
     </modules>
   </component>
 </project>
