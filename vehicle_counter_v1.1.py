@@ -1,6 +1,6 @@
 import cv2
-from picamera.array import PiRGBArray
-from picamera import PiCamera
+# from picamera.array import PiRGBArray
+# from picamera import PiCamera
 import time
 import uuid
 import numpy as np
@@ -35,7 +35,7 @@ GREEN = (0, 255, 0)
 RED = (0, 0, 255)
 WHITE = (255, 255, 255)
 # A variable for the path of the video file
-PATH_VIDEO = '../vehicle_counter_desktop/videos/rec2_8s.h264'
+PATH_VIDEO = 'videos/rec2_8s.h264'
 
 # A variable to store the video capture or the pi camera
 cam = None
@@ -304,7 +304,7 @@ def debug(frame):
 
 
 if __name__ == "__main__":
-    main_pi()
+    main_vid()
     cv2.destroyAllWindows()
     file.close()
     print("Vehicles found total:", vehicle_counter)
