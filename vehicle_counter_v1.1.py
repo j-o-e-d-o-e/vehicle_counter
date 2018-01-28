@@ -1,6 +1,6 @@
 import cv2
-# from picamera.array import PiRGBArray
-# from picamera import PiCamera
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 import time
 import uuid
 import numpy as np
@@ -57,7 +57,7 @@ found = False
 pause = False
 
 # For saving data to .csv-file
-file = open('../../../../Desktop/vehicle_counter.csv', 'w', newline='')
+file = open('vehicle_counter.csv', 'w', newline='')
 fields = ['id', 'first_seen', 'last_seen', 'dir', 'found', 'track']
 csv_writer = csv.DictWriter(file, fieldnames=fields)
 csv_writer.writeheader()
@@ -66,7 +66,7 @@ csv_writer.writeheader()
 def main_pi():
     global cam
     cam = PiCamera()
-    cam.framerate = 32
+    # cam.framerate = 32
     cam.resolution = (640, 480)
     raw_capture = PiRGBArray(cam, size=(640, 480))
     time.sleep(0.1)
@@ -304,7 +304,7 @@ def debug(frame):
 
 
 if __name__ == "__main__":
-    main_vid()
+    main_pi()
     cv2.destroyAllWindows()
     file.close()
     print("Vehicles found total:", vehicle_counter)
