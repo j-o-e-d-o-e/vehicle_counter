@@ -103,5 +103,6 @@ ENV/
 # User-specific stuff:
 .idea/
 older_versions/
+vehicle_plotter/
 videos/
 vehicle_counter.csv
