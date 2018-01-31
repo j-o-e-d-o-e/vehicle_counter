@@ -35,4 +35,4 @@ Detects and counts vehicles moving from left to right or vice versa. Also for ra
 ## Materials
 - <a href="https://github.com/iandees/speedtrack">Speedtrack</a> repo by @iandees
 - <a href="https://docs.opencv.org/3.3.1/d3/d05/tutorial_py_table_of_contents_contours.html">Tutorial</a> about contours
-- <a href="https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/">Tutorial</a> about raspberry pi threading on pyimagesearch
+- <a href="https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/">Blog post</a> about raspberry pi threading on pyimagesearch by Adrian Rosebrock
