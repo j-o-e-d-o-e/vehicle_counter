@@ -25,10 +25,16 @@ AVERAGE_WEIGHT = 0.04
 VEHICLE_TIMEOUT = 0.8
 # Center on the x axis for the center line
 X_CENTER = 400
+# Barrier on the right and left side for speed tracking
+X_LEFT = 220
+X_RIGHT = 710
+# Distance between the two barriers for speed tracking
+SPEED_DISTANCE = 17.5
 # Constants for drawing on the frame
 BLUE = (255, 0, 0)
 GREEN = (0, 255, 0)
 RED = (0, 0, 255)
+YELLOW = (0, 255, 255)
 WHITE = (255, 255, 255)
 
 # A variable to store the time when a frame was created
@@ -45,7 +51,7 @@ vehicles = []
 vehicle_counter = 0
 # For saving data to .csv-file
 file = open('vehicle_counter.csv', 'w', newline='')
-fields = ['id', 'first_seen', 'last_seen', 'dir', 'found', 'track']
+fields = ['id', 'first_seen', 'last_seen', 'left_barrier', 'right_barrier', 'speed', 'dir', 'found', 'track']
 csv_writer = csv.DictWriter(file, fieldnames=fields)
 csv_writer.writeheader()
 
@@ -63,8 +69,11 @@ def main(frame):
     if last_centroids and current_centroids:
         add_centroids_to_vehicles()
     cv2.line(frame, (X_CENTER, 0), (X_CENTER, 400), RED)
+    cv2.line(frame, (X_LEFT, 0), (X_LEFT, 400), YELLOW)
+    cv2.line(frame, (X_RIGHT, 0), (X_RIGHT, 400), YELLOW)
     if vehicles:
         detect_vehicles(frame)
+        detect_speed()
     debug(frame)
 
 
@@ -177,6 +186,9 @@ def add_new_vehicle(current):
                 id=str(uuid.uuid4())[:8],
                 first_seen=frame_time,
                 last_seen=frame_time,
+                left_barrier=None,
+                right_barrier=None,
+                speed=None,
                 dir=None,
                 found=False,
                 track=[current, last],
@@ -196,6 +208,8 @@ def detect_vehicles(frame):
             print("Removing expired vehicle {}".format(vehicles[i]['id']))
             if vehicles[i]['found']:
                 csv_writer.writerow(vehicles[i])
+            if vehicles[i]['speed']:
+                print("VEHICLE SPEED:", vehicles[i]['speed'], "km/h")
             del vehicles[i]
 
     for vehicle in [v for v in vehicles if not v['found'] and len(v['track']) >= 4]:
@@ -212,6 +226,35 @@ def detect_vehicles(frame):
                 print("Vehicles found:", vehicle_counter)
                 cv2.circle(frame, vehicle['track'][0], 10, GREEN, -1)
                 break
+
+
+def detect_speed():
+    for vehicle in [v for v in vehicles if not v['speed']]:
+        if vehicle['left_barrier'] and vehicle['right_barrier']:
+            time = round(abs(vehicle['left_barrier'] - vehicle['right_barrier']), 3)
+            # vehicle['speed'] = int((SPEED_DISTANCE * 3600 / time) / 1000)
+            vehicle['speed'] = round((SPEED_DISTANCE * 3600 / time) / 1000, 2)
+        else:
+            if not vehicle['left_barrier']:
+                start_x = vehicle['track'][-1][0]
+                end_x = vehicle['track'][0][0]
+                if start_x > end_x:
+                    order = -1
+                else:
+                    order = 1
+                for x in range(start_x, end_x, order):
+                    if x == X_LEFT:
+                        vehicle['left_barrier'] = frame_time
+            if not vehicle['right_barrier']:
+                start_x = vehicle['track'][-1][0]
+                end_x = vehicle['track'][0][0]
+                if start_x > end_x:
+                    order = -1
+                else:
+                    order = 1
+                for x in range(start_x, end_x, order):
+                    if x == X_RIGHT:
+                        vehicle['right_barrier'] = frame_time
 
 
 def debug(frame):
