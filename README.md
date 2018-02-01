@@ -1,6 +1,6 @@
 # vehicle_counter
 
-Detects and counts vehicles moving from left to right or vice versa. Also for raspberry pi.
+Detects and counts vehicles moving from left to right or vice versa. Also for raspberry pi. Includes speed approximation.
 
 ## Procedure
 
@@ -29,6 +29,7 @@ Detects and counts vehicles moving from left to right or vice versa. Also for ra
 ###  Detect whether vehicles crossed center line
 - Vehicles which haven't been seen for some time will be removed and its data saved to a .csv-file
 - If a vehicle has not been found yet and has crossed the center line, the vehicle counter increments
+- If a vehicle has crossed the left and right barrier, its speed will be calculated
 
 ![debug](https://user-images.githubusercontent.com/26798159/35406646-ca529ec2-0209-11e8-954c-534fe3939275.JPG)
 
