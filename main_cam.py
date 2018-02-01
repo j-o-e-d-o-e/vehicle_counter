@@ -1,9 +1,10 @@
 import cv2
-import vehicle_counter_v1_2 as vc
+import vehicle_counter_v1_3 as vc
 
 
 def main():
-    cam = cv2.VideoCapture(0)
+    cam = cv2.VideoCapture(1)
+    vc.X_CENTER = 450
     while True:
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break

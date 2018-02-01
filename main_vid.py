@@ -1,5 +1,5 @@
 import cv2
-import vehicle_counter_v1_2 as vc
+import vehicle_counter_v1_3 as vc
 
 # A variable for the path of the video file
 PATH_VIDEO = 'videos/rec2_16s.h264'

@@ -3,7 +3,7 @@ from picamera.array import PiRGBArray
 from picamera import PiCamera
 import time
 import cv2
-import vehicle_counter_v1_2 as vc
+import vehicle_counter_v1_3 as vc
 
 
 class PiCam:
