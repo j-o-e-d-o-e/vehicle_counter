@@ -208,8 +208,6 @@ def detect_vehicles(frame):
             print("Removing expired vehicle {}".format(vehicles[i]['id']))
             if vehicles[i]['found']:
                 csv_writer.writerow(vehicles[i])
-            if vehicles[i]['speed']:
-                print("VEHICLE SPEED:", vehicles[i]['speed'], "km/h")
             del vehicles[i]
 
     for vehicle in [v for v in vehicles if not v['found'] and len(v['track']) >= 4]:
@@ -232,29 +230,20 @@ def detect_speed():
     for vehicle in [v for v in vehicles if not v['speed']]:
         if vehicle['left_barrier'] and vehicle['right_barrier']:
             time = round(abs(vehicle['left_barrier'] - vehicle['right_barrier']), 3)
-            # vehicle['speed'] = int((SPEED_DISTANCE * 3600 / time) / 1000)
             vehicle['speed'] = round((SPEED_DISTANCE * 3600 / time) / 1000, 2)
+            print("VEHICLE SPEED:", vehicle['speed'], "km/h")
         else:
-            if not vehicle['left_barrier']:
-                start_x = vehicle['track'][-1][0]
-                end_x = vehicle['track'][0][0]
-                if start_x > end_x:
-                    order = -1
-                else:
-                    order = 1
-                for x in range(start_x, end_x, order):
-                    if x == X_LEFT:
-                        vehicle['left_barrier'] = frame_time
-            if not vehicle['right_barrier']:
-                start_x = vehicle['track'][-1][0]
-                end_x = vehicle['track'][0][0]
-                if start_x > end_x:
-                    order = -1
-                else:
-                    order = 1
-                for x in range(start_x, end_x, order):
-                    if x == X_RIGHT:
-                        vehicle['right_barrier'] = frame_time
+            start_x = vehicle['track'][-1][0]
+            end_x = vehicle['track'][0][0]
+            if start_x > end_x:
+                order = -1
+            else:
+                order = 1
+            for x in range(start_x, end_x, order):
+                if not vehicle['left_barrier'] and x == X_LEFT:
+                    vehicle['left_barrier'] = frame_time
+                if not vehicle['right_barrier'] and x == X_RIGHT:
+                    vehicle['right_barrier'] = frame_time
 
 
 def debug(frame):
