@@ -102,7 +102,9 @@ ENV/
 
 # User-specific stuff:
 .idea/
-older_versions/
+charts/
+csv/
+old/
 vehicle_plotter/
 videos/
 vehicle_counter.csv

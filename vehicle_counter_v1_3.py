@@ -169,6 +169,7 @@ def add_centroids_to_vehicles():
                         vehicle['track'].insert(0, centroid)
                         vehicle['last_seen'] = frame_time
                         candidates.remove(centroid)
+                        break
         if candidates:
             for centroid in candidates:
                 if all(cv2.norm(centroid, vehicle['track'][0]) > VEHICLE_DISTANCE for vehicle in vehicles):
