@@ -39,13 +39,13 @@ class PiCam:
 
 
 def main():
-    vc.THRESHOLD = 25
-    vc.CONTOUR_SIZE = 250
-    vc.CONTOUR_X_DISTANCE = 50
+    vc.THRESHOLD = 20
+    vc.CONTOUR_SIZE = 180
+    vc.CONTOUR_X_DISTANCE = 40
     vc.CONTOUR_Y_DISTANCE = 10
-    vc.LOCKON_DISTANCE = 50
-    vc.VEHICLE_DISTANCE = 50
-    vc.VEHICLE_TIMEOUT = 0.4
+    vc.LOCKON_DISTANCE = 70
+    vc.VEHICLE_DISTANCE = 60
+    vc.VEHICLE_TIMEOUT = 0.6
     vc.X_CENTER = 195
 
     cam = PiCam().start()
