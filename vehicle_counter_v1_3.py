@@ -3,6 +3,7 @@ import time
 import uuid
 import numpy as np
 import csv
+from pathlib import Path
 
 # Lower -> smaller changes are more readily detected
 THRESHOLD = 50
@@ -26,8 +27,8 @@ VEHICLE_TIMEOUT = 0.8
 # Center on the x axis for the center line
 X_CENTER = 400
 # Barrier on the right and left side for speed tracking
-X_LEFT = 220
-X_RIGHT = 710
+X_LEFT = 200
+X_RIGHT = 600
 # Distance between the two barriers for speed tracking
 SPEED_DISTANCE = 17.5
 # Constants for drawing on the frame
@@ -36,6 +37,9 @@ GREEN = (0, 255, 0)
 RED = (0, 0, 255)
 YELLOW = (0, 255, 255)
 WHITE = (255, 255, 255)
+# For saving data to .csv-file
+FILE_PATH = 'csv/vehicles.csv'
+FIELDS = ['id', 'first_seen', 'last_seen', 'left_barrier', 'right_barrier', 'speed', 'dir', 'found', 'track']
 
 # A variable to store the time when a frame was created
 frame_time = None
@@ -49,11 +53,6 @@ last_centroids = []
 vehicles = []
 # A variable to store the vehicle count
 vehicle_counter = 0
-# For saving data to .csv-file
-file = open('vehicle_counter.csv', 'w', newline='')
-fields = ['id', 'first_seen', 'last_seen', 'left_barrier', 'right_barrier', 'speed', 'dir', 'found', 'track']
-csv_writer = csv.DictWriter(file, fieldnames=fields)
-csv_writer.writeheader()
 
 
 def main(frame):
@@ -69,7 +68,7 @@ def main(frame):
     if last_centroids and current_centroids:
         add_centroids_to_vehicles()
     cv2.line(frame, (X_CENTER, 0), (X_CENTER, 400), RED)
-    cv2.line(frame, (X_LEFT, 0), (X_LEFT, 400), YELLOW)
+    cv2.line(frame, (X_LEFT, 0), (X_LEFT, 400), WHITE)
     cv2.line(frame, (X_RIGHT, 0), (X_RIGHT, 400), YELLOW)
     if vehicles:
         detect_vehicles(frame)
@@ -208,7 +207,7 @@ def detect_vehicles(frame):
         if frame_time - vehicles[i]['last_seen'] > VEHICLE_TIMEOUT:
             print("Removing expired vehicle {}".format(vehicles[i]['id']))
             if vehicles[i]['found']:
-                csv_writer.writerow(vehicles[i])
+                write_csv(vehicles[i])
             del vehicles[i]
 
     for vehicle in [v for v in vehicles if not v['found'] and len(v['track']) >= 4]:
@@ -225,6 +224,19 @@ def detect_vehicles(frame):
                 print("Vehicles found:", vehicle_counter)
                 cv2.circle(frame, vehicle['track'][0], 10, GREEN, -1)
                 break
+
+
+def write_csv(data):
+    file = Path(FILE_PATH)
+    if file.exists():
+        file = open(FILE_PATH, 'a', newline='')
+        csv_writer = csv.DictWriter(file, fieldnames=FIELDS)
+    else:
+        file = open(FILE_PATH, 'w', newline='')
+        csv_writer = csv.DictWriter(file, fieldnames=FIELDS)
+        csv_writer.writeheader()
+    csv_writer.writerow(data)
+    file.close()
 
 
 def detect_speed():
