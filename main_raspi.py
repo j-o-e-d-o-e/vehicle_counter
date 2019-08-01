@@ -61,8 +61,8 @@ def main():
 
     cam.stop()
     cv2.destroyAllWindows()
-    vc.file.close()
     print("Vehicles found total:", vc.vehicle_counter)
+
 
 if __name__ == "__main__":
     main()
