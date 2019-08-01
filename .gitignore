@@ -101,10 +101,9 @@ ENV/
 .mypy_cache/
 
 # User-specific stuff:
-.idea/
-charts/
-csv/
-old/
-vehicle_plotter/
-videos/
+.idea
+plots
+csv
+scp
+videos
 vehicle_counter.csv
