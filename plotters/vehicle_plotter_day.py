@@ -4,7 +4,7 @@ import csv
 
 PATH = '../csv/vehicles.csv'
 HOURS = 24
-START_DATE = datetime(2019, 8, 1)
+START_DATE = datetime(2019, 8, 2)
 END_DATE = START_DATE + timedelta(days=1)
 
 plt.title("TRAFFIC VOLUME\n" + START_DATE.strftime("%d. %b %Y (%a)"))
@@ -58,9 +58,9 @@ avg_traffic = round(sum(traffic) / HOURS, 2)
 avg_speed = round(speed / abs_traffic, 2)
 text = "Vehicles total: " + "{:,}".format(abs_traffic) \
        + "\nLeft/right: " + "{:,}".format(abs_traffic_left) + "/{:,}".format(abs_traffic_right) \
-       + "\nVehicles avg: " + "{:,}".format(avg_traffic) \
+       + "\nVehicles per hour: " + "{:,}".format(avg_traffic) \
        + "\nSpeed avg: " + "{:,}".format(avg_speed) + " km/h"
-plt.text(-1, max(traffic) + 3, text, fontweight="bold")
+plt.text(-1, max(traffic) + 1.5, text, fontweight="bold")
 
 plt.plot(x_axis, traffic, label="absolute")
 plt.plot(x_axis, traffic_left, label="dir left (k)", linestyle=":", color="green")

@@ -52,24 +52,23 @@ with open(PATH) as file:
         elif date >= END_DATE:
             break
 
-# plt.text(-1, 6500, "Vehicles total: " + "{:,}".format(sum(traffic)), fontweight="bold")
 abs_traffic = sum(traffic)
 abs_traffic_left = sum(traffic_left)
 abs_traffic_right = sum(traffic_right)
-avg_traffic = round(sum(traffic) / DAYS, 2)
+avg_traffic = abs_traffic / DAYS
+avg_traffic_week = round(avg_traffic * 7, 2)
 avg_speed = round(speed / abs_traffic, 2)
 text = "Vehicles total: " + "{:,}".format(abs_traffic) \
        + "\nLeft/right: " + "{:,}".format(abs_traffic_left) + "/{:,}".format(abs_traffic_right) \
-       + "\nVehicles avg: " + "{:,}".format(avg_traffic) \
+       + "\nVehicles per week: " + "{:,}".format(avg_traffic_week) \
        + "\nSpeed avg: " + "{:,}".format(avg_speed) + " km/h"
 plt.text(-1, max(traffic) + 3, text, fontweight="bold")
 
 for i, v in enumerate(traffic):
     plt.text(i - 0.35, v + 20, v)
 
-plt.bar(x_axis, traffic_left, label="dir kettwig", hatch="\\", color="green")
-plt.bar(x_axis, traffic_right, label="dir werden", bottom=traffic_left, hatch="//", color="red")
-avg = [sum(traffic) / DAYS] * DAYS
-plt.plot(x_axis, avg, label="average", linestyle="--", color="orange")
+plt.bar(x_axis, traffic_left, label="dir left (k)", hatch="\\", color="green")
+plt.bar(x_axis, traffic_right, label="dir right (w)", bottom=traffic_left, hatch="//", color="red")
+plt.plot(x_axis, [avg_traffic] * DAYS, label="average", linestyle="--", color="orange")
 plt.legend()
 plt.show()

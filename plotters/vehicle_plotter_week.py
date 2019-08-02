@@ -53,7 +53,7 @@ avg_traffic = round(sum(traffic) / DAYS, 2)
 avg_speed = round(speed / abs_traffic, 2)
 text = "Vehicles total: " + "{:,}".format(abs_traffic) \
        + "\nLeft/right: " + "{:,}".format(abs_traffic_left) + "/{:,}".format(abs_traffic_right) \
-       + "\nVehicles avg: " + "{:,}".format(avg_traffic) \
+       + "\nVehicles per day: " + "{:,}".format(avg_traffic) \
        + "\nSpeed avg: " + "{:,}".format(avg_speed) + " km/h"
 plt.text(-0.5, max(traffic) + 3, text, fontweight="bold")
 
