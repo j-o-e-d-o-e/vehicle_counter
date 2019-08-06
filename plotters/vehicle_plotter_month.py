@@ -4,7 +4,7 @@ import csv
 
 PATH = '../csv/vehicles.csv'
 DAYS = 31
-START_DATE = datetime(2019, 8, 1)
+START_DATE = datetime(2019, 8, 5)
 END_DATE = START_DATE + timedelta(days=DAYS - 1)
 
 plt.title("TRAFFIC VOLUME\n" + START_DATE.strftime("%d. %b %Y") + " - " + END_DATE.strftime("%d. %b %Y"))
@@ -34,10 +34,6 @@ plt.yticks(y_axis)
 with open(PATH) as file:
     csv_reader = csv.DictReader(file)
     for vehicle in csv_reader:
-        try:
-            speed += float(vehicle['speed'])
-        except ValueError:
-            continue
         timestamp = float(vehicle['last_seen'])
         date = datetime.fromtimestamp(timestamp)
         if date < START_DATE:
@@ -49,6 +45,10 @@ with open(PATH) as file:
                 traffic_left[index] += 1
             else:
                 traffic_right[index] += 1
+            try:
+                speed += float(vehicle['speed'])
+            except ValueError:
+                continue
         elif date >= END_DATE:
             break
 
@@ -58,6 +58,7 @@ abs_traffic_right = sum(traffic_right)
 avg_traffic = abs_traffic / DAYS
 avg_traffic_week = round(avg_traffic * 7, 2)
 avg_speed = round(speed / abs_traffic, 2)
+
 text = "Vehicles total: " + "{:,}".format(abs_traffic) \
        + "\nLeft/right: " + "{:,}".format(abs_traffic_left) + "/{:,}".format(abs_traffic_right) \
        + "\nVehicles per week: " + "{:,}".format(avg_traffic_week) \
