@@ -29,8 +29,9 @@ X_CENTER = 400
 # Barrier on the right and left side for speed tracking
 X_LEFT = 200
 X_RIGHT = 600
-# Distance between the two barriers for speed tracking
-SPEED_DISTANCE = 17.5
+# Distance between the two barriers for speed tracking for dir left and right
+SPEED_DISTANCE_LEFT = 16.5
+SPEED_DISTANCE_RIGHT = 15.5
 # Constants for drawing on the frame
 BLUE = (255, 0, 0)
 GREEN = (0, 255, 0)
@@ -243,7 +244,10 @@ def detect_speed():
     for vehicle in [v for v in vehicles if not v['speed']]:
         if vehicle['left_barrier'] and vehicle['right_barrier']:
             time = round(abs(vehicle['left_barrier'] - vehicle['right_barrier']), 3)
-            vehicle['speed'] = round((SPEED_DISTANCE * 3600 / time) / 1000, 2)
+            if vehicle['dir'] == 'left':
+                vehicle['speed'] = round((SPEED_DISTANCE_LEFT * 3600 / time) / 1000, 2)
+            else:
+                vehicle['speed'] = round((SPEED_DISTANCE_RIGHT * 3600 / time) / 1000, 2)
             print("VEHICLE SPEED:", vehicle['speed'], "km/h")
         else:
             start_x = vehicle['track'][-1][0]

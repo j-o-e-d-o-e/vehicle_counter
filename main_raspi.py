@@ -46,8 +46,8 @@ def main():
     vc.LOCKON_DISTANCE = 70
     vc.VEHICLE_DISTANCE = 60
     vc.VEHICLE_TIMEOUT = 0.6
-    vc.X_CENTER = 185
-    vc.X_LEFT = 120
+    vc.X_CENTER = 195
+    vc.X_LEFT = 140
     vc.X_RIGHT = 250
     
     cam = PiCam().start()
