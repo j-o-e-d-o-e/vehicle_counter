@@ -10,10 +10,14 @@ END_DATE = START_DATE + timedelta(days=DAYS - 1)
 plt.title("TRAFFIC VOLUME\n" + START_DATE.strftime("%d. %b %Y") + " - " + END_DATE.strftime("%d. %b %Y"))
 plt.tight_layout()
 plt.grid()
+
 traffic = [0] * DAYS
 traffic_left = [0] * DAYS
 traffic_right = [0] * DAYS
-speed = 0
+
+speed = [0] * DAYS
+traffic_speed = [0] * DAYS
+max_speed = [0] * 50
 
 plt.xlabel('Days')
 days = []
@@ -46,7 +50,16 @@ with open(PATH) as file:
             else:
                 traffic_right[index] += 1
             try:
-                speed += float(vehicle['speed'])
+                vehicle_speed = float(vehicle['speed'])
+                if vehicle_speed > 40:
+                    speed[index] += vehicle_speed
+                    traffic_speed[index] += 1
+                min_speed = min(max_speed)
+                if min_speed < vehicle_speed < 200:
+                    for i in range(len(max_speed)):
+                        if max_speed[i] == min_speed:
+                            max_speed[i] = vehicle_speed
+                            break
             except ValueError:
                 continue
         elif date >= END_DATE:
@@ -57,13 +70,16 @@ abs_traffic_left = sum(traffic_left)
 abs_traffic_right = sum(traffic_right)
 avg_traffic = abs_traffic / DAYS
 avg_traffic_week = round(avg_traffic * 7, 2)
-avg_speed = round(speed / abs_traffic, 2)
+
+avg_speed = round(sum(speed) / sum(traffic_speed), 2)
+avg_speed_max = round(sum(max_speed) / len(max_speed), 2)
 
 text = "Vehicles total: " + "{:,}".format(abs_traffic) \
        + "\nLeft/right: " + "{:,}".format(abs_traffic_left) + "/{:,}".format(abs_traffic_right) \
        + "\nVehicles per week: " + "{:,}".format(avg_traffic_week) \
-       + "\nSpeed avg: " + "{:,}".format(avg_speed) + " km/h"
-plt.text(-1, max(traffic) + 3, text, fontweight="bold")
+       + "\nSpeed avg: " + "{:,}".format(avg_speed) + " km/h" \
+       + "\nSpeed max: " + "{:,}".format(avg_speed_max) + " km/h"
+plt.text(-1, max(traffic) + 300, text, fontweight="bold")
 
 for i, v in enumerate(traffic):
     plt.text(i - 0.35, v + 20, v)

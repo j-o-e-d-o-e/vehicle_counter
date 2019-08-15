@@ -10,10 +10,14 @@ END_DATE = START_DATE + timedelta(days=DAYS)
 plt.title("TRAFFIC VOLUME\n" + START_DATE.strftime("%d. %b %Y") + " - " + (END_DATE - timedelta(days=1)).strftime(
     "%d. %b %Y"))
 plt.tight_layout()
+
 traffic = [0] * DAYS
 traffic_left = [0] * DAYS
 traffic_right = [0] * DAYS
-abs_speed = 0
+
+speed = [0] * DAYS
+traffic_speed = [0] * DAYS
+max_speed = [0] * 50
 
 plt.xlabel('Weekdays')
 days = [(START_DATE + timedelta(days=i)).strftime("%a (%d.%m.)") for i in range(DAYS)]
@@ -40,7 +44,16 @@ with open(PATH) as file:
             else:
                 traffic_right[index] += 1
             try:
-                abs_speed += float(vehicle['speed'])
+                vehicle_speed = float(vehicle['speed'])
+                if vehicle_speed > 40:
+                    speed[index] += vehicle_speed
+                    traffic_speed[index] += 1
+                min_speed = min(max_speed)
+                if min_speed < vehicle_speed < 200:
+                    for i in range(len(max_speed)):
+                        if max_speed[i] == min_speed:
+                            max_speed[i] = vehicle_speed
+                            break
             except ValueError:
                 continue
         elif date >= END_DATE:
@@ -49,14 +62,17 @@ with open(PATH) as file:
 abs_traffic = sum(traffic)
 abs_traffic_left = sum(traffic_left)
 abs_traffic_right = sum(traffic_right)
-avg_traffic = round(abs_traffic / DAYS, 2)
-avg_speed = round(abs_speed / abs_traffic, 2)
+avg_traffic = int(abs_traffic / DAYS)
+
+avg_speed = round(sum(speed) / sum(traffic_speed), 2)
+avg_speed_max = round(sum(max_speed) / len(max_speed), 2)
 
 text = "Vehicles total: " + "{:,}".format(abs_traffic) \
        + "\nLeft/right: " + "{:,}".format(abs_traffic_left) + "/{:,}".format(abs_traffic_right) \
        + "\nVehicles per day: " + "{:,}".format(avg_traffic) \
-       + "\nSpeed avg: " + "{:,}".format(avg_speed) + " km/h"
-plt.text(-0.5, max(traffic) + 3, text, fontweight="bold")
+       + "\nSpeed avg: " + "{:,}".format(avg_speed) + " km/h" \
+       + "\nSpeed max: " + "{:,}".format(avg_speed_max) + " km/h"
+plt.text(-0.5, max(traffic) + 300, text, fontweight="bold")
 
 for i, v in enumerate(traffic):
     plt.text(i - 0.05, v + 20, "{:,}".format(v))
