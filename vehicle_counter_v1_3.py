@@ -23,12 +23,13 @@ KERNEL = (21, 21)
 # How much the current frame impacts the average frame
 AVERAGE_WEIGHT = 0.04
 # How long a vehicle is allowed to sit around without having any new centroid
-VEHICLE_TIMEOUT = 0.8
+VEHICLE_TIMEOUT = 0.6
 # Center on the x axis for the center line
 X_CENTER = 400
 # Barrier on the right and left side for speed tracking
 X_LEFT = 200
 X_RIGHT = 600
+X_DIST = abs(X_LEFT - X_RIGHT)
 # Distance between the two barriers for speed tracking for dir left and right
 SPEED_DISTANCE_LEFT = 16.5
 SPEED_DISTANCE_RIGHT = 15.5
@@ -97,7 +98,8 @@ def process_frame(frame):
 
 
 def get_contours(frame, processed_frame):
-    _, contours, _ = cv2.findContours(processed_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    # _, contours, _ = cv2.findContours(processed_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(processed_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     contours = filter(lambda c: cv2.contourArea(c) > CONTOUR_SIZE, contours)
     contours = [cv2.approxPolyDP(contour, EPSILON * cv2.arcLength(contour, True), True) for contour in contours]
 
@@ -165,7 +167,7 @@ def add_centroids_to_vehicles():
                 distance = cv2.norm(centroid, vehicle['track'][0])
                 if distance < LOCKON_DISTANCE:
                     if (vehicle['dir'] == 'left' and vehicle['track'][0][0] > centroid[0]) or (
-                                    vehicle['dir'] == 'right' and vehicle['track'][0][0] < centroid[0]):
+                            vehicle['dir'] == 'right' and vehicle['track'][0][0] < centroid[0]):
                         vehicle['track'].insert(0, centroid)
                         vehicle['last_seen'] = frame_time
                         candidates.remove(centroid)
@@ -243,11 +245,18 @@ def write_csv(data):
 def detect_speed():
     for vehicle in [v for v in vehicles if not v['speed']]:
         if vehicle['left_barrier'] and vehicle['right_barrier']:
-            time = round(abs(vehicle['left_barrier'] - vehicle['right_barrier']), 3)
+            speed_time = round(abs(vehicle['left_barrier'] - vehicle['right_barrier']), 3)
             if vehicle['dir'] == 'left':
-                vehicle['speed'] = round((SPEED_DISTANCE_LEFT * 3600 / time) / 1000, 2)
+                gap_left = X_LEFT - list(filter(lambda t: t[0] < X_LEFT, vehicle['track']))[-1][0]
+                gap_right = X_RIGHT - list(filter(lambda t: t[0] < X_RIGHT, vehicle['track']))[-1][0]
+                factor = (X_DIST + gap_left - gap_right) / X_DIST
+                vehicle['speed'] = round((SPEED_DISTANCE_LEFT * factor * 3600 / speed_time) / 1000, 2)
             else:
-                vehicle['speed'] = round((SPEED_DISTANCE_RIGHT * 3600 / time) / 1000, 2)
+                gap_left = list(filter(lambda t: t[0] > X_LEFT, vehicle['track']))[-1][0] - X_LEFT
+                gap_right = list(filter(lambda t: t[0] > X_RIGHT, vehicle['track']))[-1][0] - X_RIGHT
+                factor = (X_DIST - gap_left + gap_right) / X_DIST
+                vehicle['speed'] = round((SPEED_DISTANCE_RIGHT * factor * 3600 / speed_time) / 1000, 2)
+                # print(f"{SPEED_DISTANCE_RIGHT} * {factor} * 3600 / {speed_time} / 1000")
             print("VEHICLE SPEED:", vehicle['speed'], "km/h")
         else:
             start_x = vehicle['track'][-1][0]
