@@ -9,6 +9,7 @@ pause = False
 
 def main():
     global pause
+    vc.SPEED_DISTANCE_LEFT = vc.SPEED_DISTANCE_RIGHT = 8
     cam = cv2.VideoCapture(PATH_VIDEO)
     while True:
         if cv2.waitKey(1) & 0xFF == ord("p"):
