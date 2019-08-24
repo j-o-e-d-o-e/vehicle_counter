@@ -12,22 +12,24 @@ traffic_left = [0] * HOURS
 traffic_right = [0] * HOURS
 abs_traffic = 0
 avg_traffic_hour = 0
+text_traffic = ""
 
 avg_speed_hour = [0] * HOURS
 avg_speed = 0
 max_speed = 0
+text_speed = ""
 
 
 def main():
-    # _, ax1 = plt.subplots()
-    # ax2 = ax1.twinx()
-    # ax1.grid()
+    _, ax1 = plt.subplots()
+    ax2 = ax1.twinx()
+    ax1.grid()
 
     plt.title("TRAFFIC VOLUME\n" + START_DATE.strftime("%d. %b %Y (%a)"))
-    plt.tight_layout()
-    plt.grid()
+    # plt.tight_layout()
 
-    plt.xlabel('Hours')
+    ax1.set_xlabel('Hours')
+    x_axis = [i for i in range(HOURS)]
     hours = []
     for i in range(HOURS):
         if i % 2 == 0:
@@ -35,23 +37,28 @@ def main():
             hours.append(hour)
         else:
             hours.append("")
-    x_axis = [i for i in range(HOURS)]
     plt.xticks(x_axis, hours)
     plt.gcf().autofmt_xdate()
 
-    plt.ylabel('Vehicles')
-    y_axis = [i for i in range(600) if i % 50 == 0]
-    plt.yticks(y_axis)
-
     get_vehicles()
-    set_text()
-    plt.plot(x_axis, traffic, label="absolute")
-    plt.plot(x_axis, traffic_left, label="dir left (k)", linestyle=":", color="green")
-    plt.plot(x_axis, traffic_right, label="dir right (w)", linestyle="-.", color="red")
-    plt.plot(x_axis, [avg_traffic_hour] * HOURS, label="average", linestyle="--", color="orange")
-    plt.plot(x_axis, avg_speed_hour, label="speed", linestyle=":", color="purple")
 
-    plt.legend()
+    set_text()
+    ax1.text(-1, max(traffic) + 30, text_traffic, fontweight="bold")
+    ax1.text(3, max(traffic) + 30, text_speed, fontweight="bold")
+
+    ax1.set_ylabel('Vehicles')
+    ax1.set_yticks([i for i in range(600) if i % 50 == 0])
+
+    line1, = ax1.plot(x_axis, traffic)
+    line2, = ax1.plot(x_axis, [avg_traffic_hour] * HOURS, linestyle="--", color="orange")
+    line3, = ax1.plot(x_axis, traffic_left, linestyle=":", color="green")
+    line4, = ax1.plot(x_axis, traffic_right, linestyle="-.", color="red")
+
+    ax2.set_ylabel('Speed (km/h)')
+    line5, = ax2.plot(x_axis, avg_speed_hour, linestyle=":", color="magenta")
+    ax2.set_yticks([i for i in range(100) if i % 10 == 0])
+
+    plt.legend((line1, line2, line3, line4, line5), ('absolute', 'average', 'dir left (k)', 'dir right (w)', 'speed'))
     plt.show()
 
 
@@ -97,17 +104,15 @@ def get_vehicles():
 
 
 def set_text():
+    global text_traffic, text_speed
     if abs_traffic != 0:
         abs_traffic_left = sum(traffic_left)
         abs_traffic_right = sum(traffic_right)
         text_traffic = "Vehicles total: " + "{:,}".format(abs_traffic) \
                        + "\nLeft/right: " + "{:,}".format(abs_traffic_left) + "/{:,}".format(abs_traffic_right) \
                        + "\nVehicles per hour: " + "{:,}".format(avg_traffic_hour)
-        plt.text(-1, max(traffic) + 30, text_traffic, fontweight="bold")
-
         text_speed = "Speed avg: " + "{:,}".format(avg_speed) + " km/h" \
                      + "\nSpeed max: " + "{:,}".format(max_speed) + " km/h"
-        plt.text(2, max(traffic) + 30, text_speed, fontweight="bold")
 
 
 if __name__ == "__main__":
