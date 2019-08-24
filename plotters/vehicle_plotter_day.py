@@ -1,11 +1,14 @@
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import csv
+import sys
 
 PATH = '../csv/vehicles.csv'
 HOURS = 24
-START_DATE = datetime(2019, 8, 23)
-END_DATE = START_DATE + timedelta(days=1)
+day = 24
+month = 8
+start_date = datetime(2019, month, day)
+end_date = start_date + timedelta(days=1)
 
 traffic = [0] * HOURS
 traffic_left = [0] * HOURS
@@ -25,7 +28,7 @@ def main():
     ax2 = ax1.twinx()
     ax1.grid()
 
-    plt.title("TRAFFIC VOLUME\n" + START_DATE.strftime("%d. %b %Y (%a)"))
+    plt.title("TRAFFIC VOLUME\n" + start_date.strftime("%d. %b %Y (%a)"))
     # plt.tight_layout()
 
     ax1.set_xlabel('Hours')
@@ -33,7 +36,7 @@ def main():
     hours = []
     for i in range(HOURS):
         if i % 2 == 0:
-            hour = (START_DATE + timedelta(hours=i)).strftime("%H:%M")
+            hour = (start_date + timedelta(hours=i)).strftime("%H:%M")
             hours.append(hour)
         else:
             hours.append("")
@@ -72,9 +75,9 @@ def get_vehicles():
         for vehicle in csv_reader:
             timestamp = float(vehicle['last_seen'])
             date = datetime.fromtimestamp(timestamp)
-            if date < START_DATE:
+            if date < start_date:
                 continue
-            elif date < END_DATE:
+            elif date < end_date:
                 hour = date.hour
                 traffic[hour] += 1
                 if vehicle['dir'] == 'left':
@@ -94,13 +97,15 @@ def get_vehicles():
                                 break
                 except ValueError:
                     continue
-            elif date >= END_DATE:
+            elif date >= end_date:
                 break
     abs_traffic = sum(traffic)
     avg_traffic_hour = int(abs_traffic / HOURS)
-    avg_speed_hour = list(map(lambda s, t: round(s / t, 2) if t > 3 else 0, speeds, speeds_traffic))
-    avg_speed = round(sum(speeds) / sum(speeds_traffic), 2)
-    max_speed = round(sum(max_speeds) / len(max_speeds), 2)
+    sum_speeds_traffic = sum(speeds_traffic)
+    if sum_speeds_traffic != 0:
+        avg_speed_hour = list(map(lambda s, t: round(s / t, 2) if t > 3 else 0, speeds, speeds_traffic))
+        avg_speed = round(sum(speeds) / sum_speeds_traffic, 2)
+        max_speed = round(sum(max_speeds) / len(max_speeds), 2)
 
 
 def set_text():
@@ -115,5 +120,18 @@ def set_text():
                      + "\nSpeed max: " + "{:,}".format(max_speed) + " km/h"
 
 
+def set_dates():
+    global day, month, start_date, end_date
+    if len(sys.argv) == 2:
+        day = int(sys.argv[1])
+    elif len(sys.argv) == 3:
+        day = int(sys.argv[1])
+        month = int(sys.argv[2])
+    start_date = datetime(2019, month, day)
+    end_date = start_date + timedelta(days=1)
+
+
 if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        set_dates()
     main()
