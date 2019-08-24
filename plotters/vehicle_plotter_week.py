@@ -4,20 +4,20 @@ import csv
 
 PATH = '../csv/vehicles.csv'
 DAYS = 7
-START_DATE = datetime(2019, 8, 5)
+START_DATE = datetime(2019, 8, 19)
 END_DATE = START_DATE + timedelta(days=DAYS)
-
-plt.title("TRAFFIC VOLUME\n" + START_DATE.strftime("%d. %b %Y") + " - " + (END_DATE - timedelta(days=1)).strftime(
-    "%d. %b %Y"))
-plt.tight_layout()
 
 traffic = [0] * DAYS
 traffic_left = [0] * DAYS
 traffic_right = [0] * DAYS
 
 speed = [0] * DAYS
-traffic_speed = [0] * DAYS
-max_speed = [0] * 50
+max_speeds = [0] * 100
+abs_speed = 0
+
+plt.title("TRAFFIC VOLUME\n" + START_DATE.strftime("%d. %b %Y") + " - " + (END_DATE - timedelta(days=1)).strftime(
+    "%d. %b %Y"))
+plt.tight_layout()
 
 plt.xlabel('Weekdays')
 days = [(START_DATE + timedelta(days=i)).strftime("%a (%d.%m.)") for i in range(DAYS)]
@@ -47,12 +47,12 @@ with open(PATH) as file:
                 vehicle_speed = float(vehicle['speed'])
                 if vehicle_speed > 40:
                     speed[index] += vehicle_speed
-                    traffic_speed[index] += 1
-                min_speed = min(max_speed)
+                    abs_speed += 1
+                min_speed = min(max_speeds)
                 if min_speed < vehicle_speed < 200:
-                    for i in range(len(max_speed)):
-                        if max_speed[i] == min_speed:
-                            max_speed[i] = vehicle_speed
+                    for i in range(len(max_speeds)):
+                        if max_speeds[i] == min_speed:
+                            max_speeds[i] = vehicle_speed
                             break
             except ValueError:
                 continue
@@ -60,26 +60,27 @@ with open(PATH) as file:
             break
 
 abs_traffic = sum(traffic)
-abs_traffic_left = sum(traffic_left)
-abs_traffic_right = sum(traffic_right)
-avg_traffic = int(abs_traffic / DAYS)
+avg_traffic_day = int(abs_traffic / DAYS)
+if abs_traffic != 0:
+    abs_traffic_left = sum(traffic_left)
+    abs_traffic_right = sum(traffic_right)
+    text_traffic = "Vehicles total: " + "{:,}".format(abs_traffic) \
+                   + "\nLeft/right: " + "{:,}".format(abs_traffic_left) + "/{:,}".format(abs_traffic_right) \
+                   + "\nVehicles per day: " + "{:,}".format(avg_traffic_day)
+    plt.text(-0.5, max(traffic) + 300, text_traffic, fontweight="bold")
 
-avg_speed = round(sum(speed) / sum(traffic_speed), 2)
-avg_speed_max = round(sum(max_speed) / len(max_speed), 2)
-
-text = "Vehicles total: " + "{:,}".format(abs_traffic) \
-       + "\nLeft/right: " + "{:,}".format(abs_traffic_left) + "/{:,}".format(abs_traffic_right) \
-       + "\nVehicles per day: " + "{:,}".format(avg_traffic) \
-       + "\nSpeed avg: " + "{:,}".format(avg_speed) + " km/h" \
-       + "\nSpeed max: " + "{:,}".format(avg_speed_max) + " km/h"
-plt.text(-0.5, max(traffic) + 300, text, fontweight="bold")
+    avg_speed = round(sum(speed) / abs_speed, 2)
+    avg_speed_max = round(sum(max_speeds) / len(max_speeds), 2)
+    text_speed = "Speed avg: " + "{:,}".format(avg_speed) + " km/h" \
+                 + "\nSpeed max: " + "{:,}".format(avg_speed_max) + " km/h"
+    plt.text(0.5, max(traffic) + 300, text_speed, fontweight="bold")
 
 for i, v in enumerate(traffic):
     plt.text(i - 0.05, v + 20, "{:,}".format(v))
 
 plt.bar(x_axis, traffic_left, label="dir left (k)", hatch="\\", color="green")
 plt.bar(x_axis, traffic_right, label="dir right (w)", bottom=traffic_left, hatch="//", color="red")
-plt.plot(x_axis, [avg_traffic] * DAYS, label="average", linestyle="--", color="orange")
+plt.plot(x_axis, [avg_traffic_day] * DAYS, label="average", linestyle="--", color="orange")
 
 plt.legend()
 plt.show()
