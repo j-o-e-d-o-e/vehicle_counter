@@ -80,13 +80,13 @@ def main():
                        + "\nLeft/right: " + "{:,}".format(abs_traffic_left) + "/{:,}".format(abs_traffic_right) \
                        + "\nVehicles per week: " + "{:,}".format(avg_traffic_week) \
                        + "\nVehicles per day: " + "{:,}".format(int(avg_traffic_day))
-        plt.text(-2, max(traffic) + 300, text_traffic, fontweight="bold")
+        plt.gcf().text(0.12, 0.9, text_traffic, fontweight="bold")
 
         avg_speed = round(sum(speed) / abs_speed, 2)
         avg_speed_max = round(sum(max_speeds) / len(max_speeds), 2)
         text_speed = "Speed avg: " + "{:,}".format(avg_speed) + " km/h" \
                      + "\nSpeed max: " + "{:,}".format(avg_speed_max) + " km/h"
-        plt.text(3, max(traffic) + 300, text_speed, fontweight="bold")
+        plt.gcf().text(0.24, 0.9, text_speed, fontweight="bold")
 
     for i, v in enumerate(traffic):
         plt.text(i - 0.35, v + 20, v)

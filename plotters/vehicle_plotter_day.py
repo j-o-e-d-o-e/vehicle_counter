@@ -46,8 +46,8 @@ def main():
     get_vehicles()
 
     set_text()
-    ax1.text(-1, max(traffic) + 30, text_traffic, fontweight="bold")
-    ax1.text(3, max(traffic) + 30, text_speed, fontweight="bold")
+    plt.gcf().text(0.12, 0.9, text_traffic, fontweight="bold")
+    plt.gcf().text(0.24, 0.9, text_speed, fontweight="bold")
 
     ax1.set_ylabel('Vehicles')
     ax1.set_yticks([i for i in range(600) if i % 50 == 0])
