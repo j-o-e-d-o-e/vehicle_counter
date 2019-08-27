@@ -22,9 +22,12 @@ avg_speed = 0
 max_speed = 0
 text_speed = ""
 
+fig = None
+
 
 def main():
-    _, ax1 = plt.subplots()
+    global fig
+    fig, ax1 = plt.subplots()
     ax2 = ax1.twinx()
     ax1.grid()
 
