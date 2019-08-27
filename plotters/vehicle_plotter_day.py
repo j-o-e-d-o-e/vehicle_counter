@@ -86,7 +86,7 @@ def get_vehicles():
                     traffic_right[hour] += 1
                 try:
                     vehicle_speed = float(vehicle['speed'])
-                    if vehicle_speed > 40:
+                    if 40 < vehicle_speed < 200:
                         speeds[hour] += vehicle_speed
                         speeds_traffic[hour] += 1
                     min_speed = min(max_speeds)
@@ -103,7 +103,7 @@ def get_vehicles():
     avg_traffic_hour = int(abs_traffic / HOURS)
     sum_speeds_traffic = sum(speeds_traffic)
     if sum_speeds_traffic != 0:
-        avg_speed_hour = list(map(lambda s, t: round(s / t, 2) if t > 3 else 0, speeds, speeds_traffic))
+        avg_speed_hour = list(map(lambda s, t: round(s / t, 2) if t > 3 else None, speeds, speeds_traffic))
         avg_speed = round(sum(speeds) / sum_speeds_traffic, 2)
         max_speed = round(sum(max_speeds) / len(max_speeds), 2)
 
