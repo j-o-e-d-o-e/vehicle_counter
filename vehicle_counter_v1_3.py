@@ -232,10 +232,10 @@ def detect_vehicles(frame):
 def write_csv(vehicle):
     file = Path(FILE_PATH)
     data = dict(
-        id=vehicle.id,
-        first_seen=int(vehicle.first_seen),
-        speed=vehicle.speed,
-        dir=vehicle.dir
+        id=vehicle['id'],
+        first_seen=int(vehicle['first_seen']),
+        speed=vehicle['speed'],
+        dir=vehicle['dir']
     )
     if file.exists():
         file = open(FILE_PATH, 'a', newline='')
