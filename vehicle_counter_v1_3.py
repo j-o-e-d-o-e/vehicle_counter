@@ -41,7 +41,7 @@ YELLOW = (0, 255, 255)
 WHITE = (255, 255, 255)
 # For saving data to .csv-file
 FILE_PATH = 'csv/vehicles.csv'
-FIELDS = ['id', 'first_seen', 'last_seen', 'left_barrier', 'right_barrier', 'speed', 'dir', 'found', 'track']
+FIELDS = ['id', 'first_seen', 'speed', 'dir']
 
 # A variable to store the time when a frame was created
 frame_time = None
@@ -229,8 +229,14 @@ def detect_vehicles(frame):
                 break
 
 
-def write_csv(data):
+def write_csv(vehicle):
     file = Path(FILE_PATH)
+    data = dict(
+        id=vehicle.id,
+        first_seen=int(vehicle.first_seen),
+        speed=vehicle.speed,
+        dir=vehicle.dir
+    )
     if file.exists():
         file = open(FILE_PATH, 'a', newline='')
         csv_writer = csv.DictWriter(file, fieldnames=FIELDS)

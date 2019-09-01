@@ -76,7 +76,7 @@ def get_vehicles():
     with open(PATH) as file:
         csv_reader = csv.DictReader(file)
         for vehicle in csv_reader:
-            timestamp = float(vehicle['last_seen'])
+            timestamp = float(vehicle['first_seen'])
             date = datetime.fromtimestamp(timestamp)
             if date < start_date:
                 continue
